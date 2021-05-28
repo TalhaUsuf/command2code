@@ -1,0 +1,10 @@
+vocab : 1000
+embed_dim : 128
+max_norm : 1.0
+lstm_hidden : 8
+num_layers : 2
+dropout : 0.5
+hidden_1 : 1024
+classes : 6
+num_directions : 1
+batch : 5
