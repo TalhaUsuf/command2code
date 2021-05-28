@@ -41,6 +41,7 @@ class lstm_embedding_model(nn.Module):
 
     
     """
+
     def __init__(self, args):
         """ get all hyper-parameters as argparse object
 
@@ -71,7 +72,7 @@ class lstm_embedding_model(nn.Module):
 
         # call the h,C initialization function to get initial tensors for `h` and `c`
         # containes tuple(h_0, c_0)
-        self.hidden = self.init_hidden()
+
         self.relu = nn.ReLU(inplace=False)
         self.softmax = nn.Softmax(dim=-1)
         self.linear1 = nn.Linear(in_features=self.args.lstm_hidden,
@@ -113,14 +114,16 @@ class lstm_embedding_model(nn.Module):
 
         """
         # print(inp)
+        self.hidden = self.init_hidden()
         out = self.embed(inp)
+
         out = pack_padded_sequence(out, seq_len, batch_first=True, enforce_sorted=False)
         out, self.hidden = self.lstm(out, self.hidden)
         # self.hidden[0] = self.hidden[0].cuda()
         # self.hidden[1] = self.hidden[1].cuda()
-        out, _ = pad_packed_sequence(sequence=out,
-                                     batch_first=True,
-                                     )
+        out, __ = pad_packed_sequence(sequence=out,
+                                      batch_first=True,
+                                      )
         # out[:,-1,:] i.e. last time step contains many zeros after being passed through pad_packed_sequences
         # Solution: Use the cell-state or hidden-state
         # Console().print(f"out shape ==> {out.shape}")
@@ -132,8 +135,10 @@ class lstm_embedding_model(nn.Module):
         # Console().print(f"last cell-state [red]C[/red] {self.hidden[1][-1]}")
         #
         # Choosing 'H' and leaving 'C'
-        # out = self.hidden[0][-1] # [num_layers * num_directions, batch, hidden_size]
-        out = out[:,-1,:]
+        # print(f"%%%%%%%%%%%% {_[0].shape} %%%%%%%%%%")
+        out = self.hidden[0][-1]  # [num_layers * num_directions, batch, hidden_size]
+
+        # out = out[:,-1,:]
 
         # out shape --> [batch, hidden_size]
         # Console().print(f"[cyan]last H state[/cyan] [color(120)]{out.shape}[/color(120)]" )

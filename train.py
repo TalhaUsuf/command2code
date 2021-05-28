@@ -6,11 +6,16 @@ import yaml
 from model import lstm_embedding_model
 import torch
 from sklearn.utils.class_weight import compute_class_weight
+from torchmetrics import Accuracy, F1
 from dataset import load_data
 from tqdm import trange
 from rich.console import Console
 from torch.optim import AdamW
 from pl_bolts.optimizers.lr_scheduler import LinearWarmupCosineAnnealingLR
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 
 config = yaml.load(open("conf.yaml", "r"), yaml.SafeLoader)
 args = argparse.Namespace(**config)
@@ -30,16 +35,24 @@ optim = AdamW(params=model.parameters(),
 
               )
 
-n = 500
+n = 1000
 schedule = LinearWarmupCosineAnnealingLR(
     optimizer=optim,
-    warmup_epochs=int((1 / 10) * n),
+    warmup_epochs=int((1 / 4) * n),
     max_epochs=n,
 )
+metric = F1(num_classes=args.classes,
+            average="macro")
+
 if __name__ == '__main__':
     print = Console().print
 
-    for epoch in trange(n, desc="EPOCH", leave=False):
+    logs = {"loss":[],
+            "f1":[],
+            "epochs":[],
+            "lr":[]}
+    for epoch in trange(n, desc="EPOCH", leave=False, position=0):
+        logs["epochs"].append(epoch)
         # print(x)
         # print(y)
         # print(sq_len)
@@ -47,15 +60,47 @@ if __name__ == '__main__':
         # print(type(sq_len))
         # break
 
+        optim.zero_grad()
         out = model(x, sq_len)
         # print(f"pred shape --> {out.shape}")
         # print(f"target shape --> {y.shape}")
         l = loss(out, y)
-        # print(f"{'EPOCH':<15}{'--->':<25}{str(l.detach().numpy().squeeze())}")
+        logs["loss"].append(l.detach().numpy().squeeze().tolist())
+        f1 = metric(out, y)
+        logs["f1"].append(f1)
+        Console().print(f"EPOCH {epoch} ---> Loss {l.detach().numpy().squeeze()} F1 {f1:.4f} ---> LR {schedule.get_lr()[0]:.10f}")
+        logs["lr"].append(schedule.get_lr()[0])
+
+        # print(f"{f'EPOCH_{epoch}':<15}{'--->':<15}{l.detach().numpy().squeeze():.4f}{'':<15}{schedule.get_lr()[0]:.10f}")
         l.backward(retain_graph=True)
         optim.step()
-        # schedule.step() # in epoch loop
-        # optim.zero_grad()
+        schedule.step() # in epoch loop
 
-if __name__ == '__main__':
-    pass
+    logs = pd.DataFrame.from_dict(logs)
+    sns.set_style("whitegrid")
+    ax = sns.relplot(x="epochs",
+                 y="lr",
+                 data=logs,
+                kind="line"
+                 )
+    ax.despine()
+    ay = sns.relplot(x="epochs",
+                 y="loss",
+                 data=logs,
+                kind="line"
+                 )
+    ay.despine()
+    az = sns.relplot(x="epochs",
+                     y="f1",
+                     data=logs,
+                     size="loss"
+                     )
+    az.despine()
+
+    azz = sns.relplot(x="loss",
+                     y="f1",
+                     data=logs,
+                     )
+    azz.despine()
+
+    plt.show()
