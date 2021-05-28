@@ -9,3 +9,5 @@ max_norm: 1.0
 num_directions: 1
 num_layers: 2
 vocab: 16
+dataset : dataset/commands2code.csv
+
