@@ -2,7 +2,6 @@
 This repository uses **stacked-LSTM** architecture using **two** layers to 
 train on the given data.
 
->Following args. are present inside the `config.yaml` file.
 
 > Images after the training are saved inside `images` folder.
 
@@ -24,6 +23,8 @@ num_directions | 1
 num_layers | 2
 vocab | 16
 
+# Installaion
+>`pip install -r requirements.txt`
 # How To Train
 >Set parameters inside `config.yaml` file, also set dataset path. 
 

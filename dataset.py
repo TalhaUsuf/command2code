@@ -12,7 +12,7 @@ def load_data():
     args = yaml.load(open("conf.yaml", "r"), yaml.SafeLoader)
 
     dataset = pd.read_csv(args["dataset"], skipinitialspace=True)
-
+    print(f"{args['dataset']} csv file should contain the 'Commands' and 'TargetFile' columns")
     commands = dataset['Commands'].values.tolist()
     labels = dataset['TargetFile'].values.tolist()
 
