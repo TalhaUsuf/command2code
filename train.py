@@ -15,7 +15,12 @@ from pl_bolts.optimizers.lr_scheduler import LinearWarmupCosineAnnealingLR
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from pathlib import Path
+import shutil
 
+Path("images").mkdir(parents=True, exist_ok=True)
+if any(Path("images").iterdir()): # if files are present inside "images"
+    shutil.rmtree("images") # then delete the whole tree
 
 config = yaml.load(open("conf.yaml", "r"), yaml.SafeLoader)
 args = argparse.Namespace(**config)
@@ -78,29 +83,33 @@ if __name__ == '__main__':
 
     logs = pd.DataFrame.from_dict(logs)
     sns.set_style("whitegrid")
+    
     ax = sns.relplot(x="epochs",
                  y="lr",
                  data=logs,
                 kind="line"
                  )
     ax.despine()
+    ax.savefig("images/epochs_lr.png")
     ay = sns.relplot(x="epochs",
                  y="loss",
                  data=logs,
                 kind="line"
                  )
     ay.despine()
+    ay.savefig("images/epochs_loss.png")
     az = sns.relplot(x="epochs",
                      y="f1",
                      data=logs,
                      size="loss"
                      )
     az.despine()
+    az.savefig("images/epochs_f1_loss.png")
 
     azz = sns.relplot(x="loss",
                      y="f1",
                      data=logs,
                      )
     azz.despine()
-
+    azz.savefig("images/loss_d1.png")
     plt.show()
