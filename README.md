@@ -6,9 +6,12 @@ train on the given data.
 
 > Images after the training are saved inside `images` folder.
 
+> Uses `tensorflow tokenizer` for tokenization of text.
+
+> Uses embedding for word vectorization. 
 # Hyper Parameters
 | Parameters | Values |
-| ---------- | -------:|
+| :---------- | -------:|
 batch | 12
 classes| 6
 dropout | 0.5
@@ -21,10 +24,16 @@ num_directions | 1
 num_layers | 2
 vocab | 16
 
-# Usage
->Set parameters inside `config.yaml` file
+# How To Train
+>Set parameters inside `config.yaml` file, also set dataset path. 
 
-> `python train.py`
+> `python train.py` to start training
+
+> Dataset files are located inside the `dataset` folder
+
+# TODO
+> Add prediction function which directly takes `text-command` from user.
+
 
 # Results
 |  |
