@@ -111,5 +111,5 @@ if __name__ == '__main__':
                      data=logs,
                      )
     azz.despine()
-    azz.savefig("images/loss_d1.png")
+    azz.savefig("images/loss_f1.png")
     plt.show()

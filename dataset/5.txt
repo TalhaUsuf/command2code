@@ -1,0 +1,15 @@
+Col
+	            {
+	                Size:4;
+	                CheckBox [Active]
+	                {
+	                    Label: "";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: true;
+                           Caption: "Is Active?";
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.Active];
+                           
+                           
+	                };
+	            };

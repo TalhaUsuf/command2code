@@ -5,11 +5,13 @@ import torch
 import numpy as np
 from sklearn.utils.class_weight import compute_class_weight
 from tqdm import trange
+import yaml
 
 
 def load_data():
+    args = yaml.load(open("conf.yaml", "r"), yaml.SafeLoader)
 
-    dataset = pd.read_csv("../project1/commands2code.csv", skipinitialspace=True)
+    dataset = pd.read_csv(args["dataset"], skipinitialspace=True)
 
     commands = dataset['Commands'].values.tolist()
     labels = dataset['TargetFile'].values.tolist()

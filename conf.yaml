@@ -8,3 +8,4 @@ hidden_1 : 1024
 classes : 6
 num_directions : 1
 batch : 5
+dataset : dataset/commands2code.csv
