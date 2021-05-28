@@ -80,6 +80,12 @@ class lstm_embedding_model(nn.Module):
         self.out = nn.Linear(in_features=self.args.hidden_1,
                              out_features=self.args.classes)
 
+    def last_timestep(self, unpacked, lengths):
+        # Index of the last output for each sequence.
+        idx = (lengths - 1).view(-1, 1).expand(unpacked.size(0),
+                                               unpacked.size(2)).unsqueeze(1)
+        return unpacked.gather(1, idx).squeeze()
+
     def init_hidden(self):
         """Initialize the weights"""
 
