@@ -20,7 +20,8 @@ import shutil
 
 Path("images").mkdir(parents=True, exist_ok=True)
 if any(Path("images").iterdir()): # if files are present inside "images"
-    shutil.rmtree("images") # then delete the whole tree
+    shutil.rmtree("images") # then delete the whole tree 
+    Path("images").mkdir(exist_ok=True, parents=True)
 
 config = yaml.load(open("conf.yaml", "r"), yaml.SafeLoader)
 args = argparse.Namespace(**config)
@@ -33,13 +34,14 @@ yaml.dump(vars(args), open("conf.yaml", "w"), yaml.SafeDumper)
 loss = torch.nn.CrossEntropyLoss()
 args.vocab = vocab
 args.batch = bs
+
 x = torch.tensor(x).type(torch.LongTensor)
 y = torch.tensor(y).type(torch.LongTensor)
 sq_len = torch.tensor(sq_len).type(torch.long).cpu()
 
 model = lstm_embedding_model(args)
 optim = AdamW(params=model.parameters(),
-              lr=0.001,
+              lr=0.005,
 
               )
 

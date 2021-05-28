@@ -68,14 +68,15 @@ class lstm_embedding_model(nn.Module):
                             hidden_size=self.args.lstm_hidden,
                             num_layers=self.args.num_layers,
                             dropout=self.args.dropout,
-                            batch_first=True)
+                            batch_first=True,
+                            bidirectional=True if self.args.num_directions==2 else False)
 
         # call the h,C initialization function to get initial tensors for `h` and `c`
         # containes tuple(h_0, c_0)
 
         self.relu = nn.ReLU(inplace=False)
         self.softmax = nn.Softmax(dim=-1)
-        self.linear1 = nn.Linear(in_features=self.args.lstm_hidden,
+        self.linear1 = nn.Linear(in_features=self.args.lstm_hidden*self.args.num_directions,
                                  out_features=self.args.hidden_1)
         self.out = nn.Linear(in_features=self.args.hidden_1,
                              out_features=self.args.classes)
@@ -104,6 +105,12 @@ class lstm_embedding_model(nn.Module):
                     requires_grad=True)
             )
 
+    def last_timestep(self, unpacked, lengths):
+        # Index of the last output for each sequence.
+        idx = (lengths - 1).view(-1, 1).expand(unpacked.size(0),
+                                               unpacked.size(2)).unsqueeze(1)
+        return unpacked.gather(1, idx).squeeze()
+
     def forward(self, inp, seq_len):
         """applies forward propagation loop
 
@@ -114,7 +121,7 @@ class lstm_embedding_model(nn.Module):
 
         """
         # print(inp)
-        self.hidden = self.init_hidden()
+        self.hidden = self.init_hidden() # initialize the hidden states from zero
         out = self.embed(inp)
 
         out = pack_padded_sequence(out, seq_len, batch_first=True, enforce_sorted=False)
@@ -124,6 +131,7 @@ class lstm_embedding_model(nn.Module):
         out, __ = pad_packed_sequence(sequence=out,
                                       batch_first=True,
                                       )
+
         # out[:,-1,:] i.e. last time step contains many zeros after being passed through pad_packed_sequences
         # Solution: Use the cell-state or hidden-state
         # Console().print(f"out shape ==> {out.shape}")
@@ -136,8 +144,9 @@ class lstm_embedding_model(nn.Module):
         #
         # Choosing 'H' and leaving 'C'
         # print(f"%%%%%%%%%%%% {_[0].shape} %%%%%%%%%%")
-        out = self.hidden[0][-1]  # [num_layers * num_directions, batch, hidden_size]
-
+        # out = self.hidden[0][-1]  # [num_layers * num_directions, batch, hidden_size]
+        out = self.last_timestep(out, seq_len)
+        print(out.shape)
         # out = out[:,-1,:]
 
         # out shape --> [batch, hidden_size]
