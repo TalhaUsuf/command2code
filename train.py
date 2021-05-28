@@ -26,6 +26,9 @@ config = yaml.load(open("conf.yaml", "r"), yaml.SafeLoader)
 args = argparse.Namespace(**config)
 
 x, y, weights, sq_len, vocab, bs = load_data()
+args.vocab = vocab
+args.batch = bs
+yaml.dump(vars(args), open("conf.yaml", "w"), yaml.SafeDumper)
 # loss = torch.nn.CrossEntropyLoss(weight=torch.tensor(weights))
 loss = torch.nn.CrossEntropyLoss()
 args.vocab = vocab
@@ -40,7 +43,7 @@ optim = AdamW(params=model.parameters(),
 
               )
 
-n = 1000
+n = args.epochs
 schedule = LinearWarmupCosineAnnealingLR(
     optimizer=optim,
     warmup_epochs=int((1 / 4) * n),
