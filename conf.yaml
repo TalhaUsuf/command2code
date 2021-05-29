@@ -1,0 +1,12 @@
+batch: 12
+classes: 6
+dataset: dataset/commands2code.csv
+dropout: 0.5
+embed_dim: 128
+epochs: 1500
+hidden_1: 1024
+lstm_hidden: 8
+max_norm: 1.0
+num_directions: 1
+num_layers: 2
+vocab: 16
