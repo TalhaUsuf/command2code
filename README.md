@@ -1,5 +1,5 @@
 # Development
-[Introduction](# Introduction)
+[Introduction](#introduction)
 
 
 # Introduction
