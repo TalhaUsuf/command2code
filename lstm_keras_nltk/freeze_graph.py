@@ -13,7 +13,6 @@ import tensorflow as tf
 import os
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
-tf.disabl
 
 def convert(prevmodel, export_path, freeze_graph_binary):
     # open up a Tensorflow session
