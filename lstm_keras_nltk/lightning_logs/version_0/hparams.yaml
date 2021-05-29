@@ -1,0 +1,9 @@
+embed_dim: 256
+gamma: 0.01
+h1: 256
+h2: 16
+hidden: 256
+nC: 6
+n_layers: 3
+step_sz: 2
+vocab: 28996

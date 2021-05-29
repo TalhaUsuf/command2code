@@ -1,0 +1,14 @@
+Col
+    	          {
+    	              Size:4;
+    	              RadioGroup [text]
+    	              {
+    	                  Label: "text";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Vertical : false;
+                           Mandatory: true;
+                           Value : [];
+                           DataSource : [];
+    	              };
+    	          };
