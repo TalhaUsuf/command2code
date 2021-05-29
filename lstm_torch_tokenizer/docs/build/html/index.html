@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multilabel Augmentation For Obj. Detection &#8212; multilabel_augmentation 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="multilabel-augmentation-for-obj-detection">
+<h1>Multilabel Augmentation For Obj. Detection<a class="headerlink" href="#multilabel-augmentation-for-obj-detection" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-multilabel_augmentation"></span><span class="target" id="module-model"></span><dl class="py class">
+<dt id="model.lstm_embedding">
+<em class="property">class </em><code class="sig-prename descclassname">model.</code><code class="sig-name descname">lstm_embedding</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.lstm_embedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>defines the <cite>lstm model</cite> with <cite>embedding</cite></p>
+<dl class="simple">
+<dt>args<span class="classifier">argparse.ArgumentParser()</span></dt><dd><p>contains all the hyper-parameters user has passed</p>
+</dd>
+<dt>embed<span class="classifier">nn.Embedding</span></dt><dd><p>the embedding layer, find its parameters from <cite>args</cite> attribute</p>
+</dd>
+<dt>lstm<span class="classifier">nn.LSTM</span></dt><dd><p><cite>lstm</cite> layer, find its parameters from <cite>args</cite> attribute</p>
+</dd>
+<dt>initialize<span class="classifier">function</span></dt><dd><p>it returns the initializers <cite>h_0</cite> and <cite>c_0</cite> to initialize the LSTM model</p>
+</dd>
+<dt>relu<span class="classifier">nn.ReLU</span></dt><dd><p>relu activation layer</p>
+</dd>
+<dt>softmax<span class="classifier">nn.Softmax</span></dt><dd><p>softmax activation layer</p>
+</dd>
+<dt>linear1<span class="classifier">nn.Linear</span></dt><dd><p>ist linear layer after LSTM, find its parameters from <cite>args</cite> attribute</p>
+</dd>
+<dt>out<span class="classifier">nn.Linear</span></dt><dd><p>last linear layer, find its parameters from <cite>args</cite> attribute</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="model.lstm_embedding.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inp</span></em>, <em class="sig-param"><span class="n">seq_len</span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.lstm_embedding.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>applies forward propagation loop</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inp</strong> (<em>torch.Tensor</em>) – shape should be [N, D] where N is mini-batch size and D is seq-lenght</p></li>
+<li><p><strong>seq_len</strong> (<em>torch.Tensor</em>) – shape should be [N,] where N is mini-batch size</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="model.lstm_embedding.init_hidden">
+<code class="sig-name descname">init_hidden</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#model.lstm_embedding.init_hidden" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the weights</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">multilabel_augmentation</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Talha.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
