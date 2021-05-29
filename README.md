@@ -1,8 +1,12 @@
+# Development
+[Introduction](# Introduction)
+
+
 # Introduction
 This repository uses **stacked-LSTM** architecture using **two** layers to 
 train on the given data.
 
-#Updates
+# Updates
 
 - May 28, 2021 ---> Adjusted shapes to enable `bidirectional` LSTM 
 - May 28, 2021 ---> LSTM's last output state is used instead of last hidden state, thus using the `pad_packed_sequences`
