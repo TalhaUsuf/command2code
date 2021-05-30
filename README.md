@@ -1,8 +1,8 @@
 # Introduction 
 
 
-- [LSTM-keras](lstm-keras-nltk)
-- [LSTM-pytorch](lstm-torch-tokenizer)
+- [LSTM-keras](lstm_keras_nltk)
+- [LSTM-pytorch](lstm_torch_tokenizer)
 
 
 
