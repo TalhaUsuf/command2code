@@ -1,0 +1,12 @@
+Col
+    	          {
+    	              Size:4;
+    	              Date [DOB]
+    	              {
+    	                  Label: "Date of Birth";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: true;
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.DateOfBirth];
+    	              };
+    	          };
