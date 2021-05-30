@@ -12,11 +12,13 @@
 
 # Introduction
 
-
 This repo. deals with *keras lstm implementation*.
-[This image](#Untitled Diagram.svg) shows the whole flow chart of inference.
+[This image](Untitled%20Diagram.png) shows the whole flow chart of inference.
 
-![Image](./model_flowchart.png)
+
+![Image](Untitled%20Diagram.png)
+
+
 
 
 
