@@ -1,0 +1,15 @@
+Commands,TargetFile
+Insert 1 column with text field,1.txt
+Insert a button,6.txt
+Insert 1 dropdown field,4.txt
+Insert 1 date box,2.txt
+Insert a checkbox,5.txt
+Inset a RadioGroup,3.txt
+Insert a text field,1.txt
+Insert 1 text field,1.txt
+Insert a column with button,6.txt
+Insert a column with a date box,2.txt
+Insert a column with a dropdown,4.txt
+Insert 1 column with 1 dropdown,4.txt
+Insert a column with a checkbox,5.txt
+Insert a column with a radiogroup,3.txt
