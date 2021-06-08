@@ -1,0 +1,218 @@
+Commands,Main Label,Sub label
+please generate a text box with label First Name,textbox,1a.txt
+generate a text box with label First Name,textbox,1a.txt
+please create a text box with label First Name,textbox,1a.txt
+create a text box with label First Name,textbox,1a.txt
+please draw a text box with label First Name,textbox,1a.txt
+draw a text box with label First Name,textbox,1a.txt
+please generate a text control with label First Name,textbox,1a.txt
+generate a text control with label First Name,textbox,1a.txt
+please create a text control with label First Name,textbox,1a.txt
+create a text control with label First Name,textbox,1a.txt
+please draw a text control with label First Name,textbox,1a.txt
+draw a text control with label First Name,textbox,1a.txt
+please generate a mandatory text box with label First Name,textbox,1b.txt
+generate a mandatory text box with label First Name,textbox,1b.txt
+please create a mandatory text box with label First Name,textbox,1b.txt
+create a mandatory text box with label First Name,textbox,1b.txt
+please draw a mandatory text box with label First Name,textbox,1b.txt
+draw a text mandatory box with label First Name,textbox,1b.txt
+please generate a mandatory text control with label First Name,textbox,1b.txt
+generate a mandatory text control with label First Name,textbox,1b.txt
+please create a mandatory text control with label First Name,textbox,1b.txt
+create a mandatory text control with label First Name,textbox,1b.txt
+please draw a mandatory text control with label First Name,textbox,1b.txt
+draw a text mandatory control with label First Name,textbox,1b.txt
+please generate a mandatory text control with label First Name,textbox,1b.txt
+generate a mandatory text control with label First Name,textbox,1b.txt
+please create a mandatory text control with label First Name,textbox,1b.txt
+create a mandatory text control with label First Name,textbox,1b.txt
+please draw a mandatory text control with label First Name,textbox,1b.txt
+draw a text mandatory control with label First Name,textbox,1b.txt
+please generate an optional text control with label First Name,textbox,1a.txt
+generate an optional text control with label First Name,textbox,1a.txt
+please create an optional text control with label First Name,textbox,1a.txt
+create an optional text control with label First Name,textbox,1a.txt
+please draw an optional text control with label First Name,textbox,1a.txt
+draw an optional text control with label First Name,textbox,1a.txt
+please generate a textbox with label First Name,textbox,1a.txt
+generate a textbox with label First Name,textbox,1a.txt
+please create a textbox with label First Name,textbox,1a.txt
+create a textbox with label First Name,textbox,1a.txt
+please draw a textbox with label First Name,textbox,1a.txt
+draw a textbox with label First Name,textbox,1a.txt
+please generate a textcontrol with label First Name,textbox,1a.txt
+generate a textcontrol with label First Name,textbox,1a.txt
+please create a textcontrol with label First Name,textbox,1a.txt
+create a textcontrol with label First Name,textbox,1a.txt
+please draw a textcontrol with label First Name,textbox,1a.txt
+draw a textcontrol with label First Name,textbox,1a.txt
+please generate a mandatory textbox with label First Name,textbox,1b.txt
+generate a mandatory textbox with label First Name,textbox,1b.txt
+please create a mandatory textbox with label First Name,textbox,1b.txt
+create a mandatory textbox with label First Name,textbox,1b.txt
+please draw a mandatory textbox with label First Name,textbox,1b.txt
+draw a mandatory textbox with label First Name,textbox,1b.txt
+please generate a mandatory textcontrol with label First Name,textbox,1b.txt
+generate a mandatory textcontrol with label First Name,textbox,1b.txt
+please create a mandatory textcontrol with label First Name,textbox,1b.txt
+create a mandatory textcontrol with label First Name,textbox,1b.txt
+please draw a mandatory textcontrol with label First Name,textbox,1b.txt
+draw a mandatory textcontrol with label First Name,textbox,1b.txt
+please generate a mandatory textcontrol with label First Name,textbox,1b.txt
+generate a mandatory textcontrol with label First Name,textbox,1b.txt
+please create a mandatory textcontrol with label First Name,textbox,1b.txt
+create a mandatory textcontrol with label First Name,textbox,1b.txt
+please draw a mandatory textcontrol with label First Name,textbox,1b.txt
+draw a mandatory textcontrol with label First Name,textbox,1b.txt
+please generate an optional textcontrol with label First Name,textbox,1a.txt
+generate an optional textcontrol with label First Name,textbox,1a.txt
+please create an optional textcontrol with label First Name,textbox,1a.txt
+create an optional textcontrol with label First Name,textbox,1a.txt
+please draw an optional textcontrol with label First Name,textbox,1a.txt
+draw an optional textcontrol with label First Name,textbox,1a.txt
+please generate a textbox with label First Name,textbox,1a.txt
+generate a textbox with label First Name,textbox,1a.txt
+please create a textbox with label First Name,textbox,1a.txt
+create a textbox with label First Name,textbox,1a.txt
+please draw a textbox with label First Name,textbox,1a.txt
+draw a textbox with label First Name,textbox,1a.txt
+please generate a textcontrol with label First Name,textbox,1a.txt
+generate a textcontrol with label First Name,textbox,1a.txt
+please create a textcontrol with label First Name,textbox,1a.txt
+create a textcontrol with label First Name,textbox,1a.txt
+please draw a textcontrol with label First Name,textbox,1a.txt
+draw a textcontrol with label First Name,textbox,1a.txt
+please generate a mandatory textbox with label First Name,textbox,1b.txt
+generate a mandatory textbox with label First Name,textbox,1b.txt
+please create a mandatory textbox with label First Name,textbox,1b.txt
+create a mandatory textbox with label First Name,textbox,1b.txt
+please draw a mandatory textbox with label First Name,textbox,1b.txt
+draw a mandatory textbox with label First Name,textbox,1b.txt
+please generate a mandatory textcontrol with label First Name,textbox,1b.txt
+generate a mandatory textcontrol with label First Name,textbox,1b.txt
+please create a mandatory textcontrol with label First Name,textbox,1b.txt
+create a mandatory textcontrol with label First Name,textbox,1b.txt
+please draw a mandatory textcontrol with label First Name,textbox,1b.txt
+draw a mandatory textcontrol with label First Name,textbox,1b.txt
+please generate a mandatory textcontrol with label First Name,textbox,1b.txt
+generate a mandatory textcontrol with label First Name,textbox,1b.txt
+please create a mandatory textcontrol with label First Name,textbox,1b.txt
+create a mandatory textcontrol with label First Name,textbox,1b.txt
+please draw a mandatory textcontrol with label First Name,textbox,1b.txt
+draw a mandatory textcontrol with label First Name,textbox,1b.txt
+please generate an optional textcontrol with label First Name,textbox,1a.txt
+generate an optional textcontrol with label First Name,textbox,1a.txt
+please create an optional textcontrol with label First Name,textbox,1a.txt
+create an optional textcontrol with label First Name,textbox,1a.txt
+please draw an optional textcontrol with label First Name,textbox,1a.txt
+draw an optional textcontrol with label First Name,textbox,1a.txt
+add a text field for First Name,textbox,1a.txt
+include a text field for First Name,textbox,1a.txt
+make a First Name text field,textbox,1a.txt
+add a box for entering text and name box First name,textbox,1a.txt
+"Please add a text type field with label ""First Name""",textbox,1a.txt
+Add a Number field with label Age,textbox,1c.txt
+"Create a UI control type Number and Title ""Age""",textbox,1c.txt
+"Create a UI control for email, type Text and title ""Email""",textbox,1d.txt
+"Create a Mandatory UI control for email, type Text and title ""Email""",textbox,1e.txt
+"Create an optional  UI control for email, type Text and title ""Email""",textbox,1d.txt
+"Create an optional and readonly UI control for email, type Text and title ""Email""",textbox,1f.txt
+"Create a Mandatory and editable UI control for email, type Text and title ""Email""",textbox,1d.txt
+"Create an edtiable text field with title ""First Name""",textbox,1a.txt
+"Create an edtiable text field with label ""First Name""",textbox,1a.txt
+"Create an readonly text control title ""First Name""",textbox,1g.txt
+"Create an readonly textcontrol title ""First Name""",textbox,1g.txt
+"Create an edtiable UI field with label ""First Name"" and type Text",textbox,1a.txt
+"Create an readonly UI Control with title ""First Name"" and type text",textbox,1g.txt
+"Create an edtiable text field with title ""First Name""",textbox,1a.txt
+Create a textbox to input age,textbox,1c.txt
+Create a text box to input first name,textbox,1a.txt
+create a number box to get age,textbox,1c.txt
+add a number box to get age,textbox,1c.txt
+add a number field to input age,textbox,1c.txt
+Please add a number field to input age,textbox,1c.txt
+Please draw a mandatory nuber field with title as age,textbox,1h.txt
+please add a field of type number display editable and mandatory as true,textbox,1h.txt
+please create a U# Number type control set display property to readonly,textbox,1i.txt
+please develop a U# Number type control set display property to readonly,textbox,1i.txt
+please add a U# Number type control set display property to readonly,textbox,1i.txt
+please draw a U# Number type control set display property to readonly,textbox,1i.txt
+please build a U# Number type control set display property to readonly,textbox,1i.txt
+please design a U# Number type control set display property to readonly,textbox,1i.txt
+please produce a U# Number type control set display property to readonly,textbox,1i.txt
+please construct a U# Number type control set display property to readonly,textbox,1i.txt
+"please create an editbale U# Form control of type number and title Age, make it mandatory",textbox,1j.txt
+"please draw an editbale U# Form control of type number and title Age, make it mandatory",textbox,1j.txt
+"please add an editbale U# Form control of type number and title Age, make it mandatory",textbox,1j.txt
+"please design an editbale U# Form control of type number and title Age, make it mandatory",textbox,1j.txt
+"please produce an editbale U# Form control of type number and title Age, make it mandatory",textbox,1j.txt
+"please construct an editbale U# Form control of type number and title Age, make it mandatory",textbox,1j.txt
+"please produce an editbale U# Form control of type number and title Age, make it mandatory",textbox,1j.txt
+"please generate an editbale U# Form control of type number and title Age, make it mandatory",textbox,1j.txt
+"please make an editbale U# Form control of type number and title Age, make it mandatory",textbox,1j.txt
+"Generate a form control to enter Number, display editable and mandtory set a false",textbox,1k.txt
+"create a form control to enter Number, display editable and mandtory set a false",textbox,1k.txt
+"add a form control to enter Number, display editable and mandtory set a false",textbox,1k.txt
+"design a form control to enter Number, display editable and mandtory set a false",textbox,1k.txt
+"make a form control to enter Number, display editable and mandtory set a false",textbox,1k.txt
+"develop a form control to enter Number, display editable and mandtory set a false",textbox,1k.txt
+"construct a form control to enter Number, display editable and mandtory set a false",textbox,1k.txt
+"build a form control to enter Number, display editable and mandtory set a false",textbox,1k.txt
+"make a form control to enter Number, display editable and mandtory set a false",textbox,1k.txt
+add a number ui control to get age from user,textbox,1c.txt
+We need UI control for first name and its type is text,textbox,1a.txt
+"i need a text control to enter name, title should be ""First name""",textbox,1a.txt
+"Please create a UI control to enter first name, its title should be First Name and type must be Text",textbox,1a.txt
+"Please create a UI control to enter first name, its title should be First Name and type must be Text",textbox,1a.txt
+Create Dropdown list for country,Dropdown,4a.txt
+Please Create a Dropdown list for country,Dropdown,4a.txt
+Create a mandatory Dropdown list for country,Dropdown,4b.txt
+Please Create a mandatory Dropdown list for country,Dropdown,4b.txt
+Please Create a required Dropdown list for country,Dropdown,4a.txt
+Create a required Dropdown list for country,Dropdown,4a.txt
+Please Create a mandatory Drop down list for country,Dropdown,4b.txt
+Create a mandatory Drop down list for country,Dropdown,4b.txt
+Please Create a mandatory Dropdown with title country,Dropdown,4b.txt
+Create a mandatory Dropdown with title country,Dropdown,4b.txt
+Create  select control with title country,Dropdown,4a.txt
+Create  select control  to select country with title country,Dropdown,4a.txt
+Create select control  list for country,Dropdown,4a.txt
+Please Create a select control  list for country,Dropdown,4a.txt
+Create a mandatory select control  list for country,Dropdown,4a.txt
+Please Create a mandatory select control  list for country,Dropdown,4b.txt
+Please Create a required select control  list for country,Dropdown,4a.txt
+Create a required select control  list for country,Dropdown,4a.txt
+Please Create a mandatory select list for country,Dropdown,4b.txt
+Create a mandatory select list for country,Dropdown,4b.txt
+Please Create a mandatory select with title country,Dropdown,4b.txt
+Create a mandatory select with title country,Dropdown,4b.txt
+Create  select with title country,Dropdown,4a.txt
+Create  a list to select country with title country,Dropdown,4a.txt
+Create UI Element to select country from list of countries,Dropdown,4a.txt
+Please Create UI Element to select country from list of countries,Dropdown,4a.txt
+Add an UI Element to select country from list of countries,Dropdown,4a.txt
+Please Add an UI Element to select country from list of countries,Dropdown,4a.txt
+Please Generate an UI Element to select country from list of countries,Dropdown,4a.txt
+Generate an UI Element to select country from list of countries,Dropdown,4a.txt
+Develop an UI Element to select country from list of countries,Dropdown,4a.txt
+Please Develop an UI Element to select country from list of countries,Dropdown,4a.txt
+Please Create  U# dropdown control with title country,Dropdown,4a.txt
+Please develop  U# dropdown control with title country,Dropdown,4a.txt
+Please make  U# dropdown control with title country,Dropdown,4a.txt
+Please generate  U# dropdown control with title country,Dropdown,4a.txt
+Please add  U# dropdown control with title country,Dropdown,4a.txt
+Please construct  U# dropdown control with title country,Dropdown,4a.txt
+Please build  U# dropdown control with title country,Dropdown,4a.txt
+Please give  U# dropdown control with title country,Dropdown,4a.txt
+Please produce  U# dropdown control with title country,Dropdown,4a.txt
+Please Create  U# drop down control with title country,Dropdown,4a.txt
+Please develop  U# drop down control with title country,Dropdown,4a.txt
+Please make  U# drop down control with title country,Dropdown,4a.txt
+Please generate  U# drop down control with title country,Dropdown,4a.txt
+Please add  U# drop down control with title country,Dropdown,4a.txt
+Please construct  U# drop down control with title country,Dropdown,4a.txt
+Please build  U# drop down control with title country,Dropdown,4a.txt
+Please give  U# drop down control with title country,Dropdown,4a.txt
+Please produce  U# drop down control with title country,Dropdown,4a.txt
+Please Create  U# drop down control with title country,Dropdown,4a.txt
