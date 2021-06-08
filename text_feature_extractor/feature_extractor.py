@@ -24,7 +24,7 @@ parser = arg.parse_args()
 def main():
     # parse and get tokenizer
     tokenizer = parse()
-    x, y_major, y_minor = read_file(pth="dataset/Ultimus Work/Commands_with_labels.csv")
+    x, y_major, y_minor = read_file(pth="dataset/Ultimus Work/Commands_with_labels.csv") # all are arrays
 
     if parser.tfidf:
         # if tfidf is used then it is an instance of pipeline and should be treated differently
@@ -35,6 +35,7 @@ def main():
         Console().print("[cyan]Saved features.pkl, main_labels.pkl and sub_labels.pkl in \'command2code\' dir[/cyan]")
 
     if parser.keras:
+        tokenizer.fit_on_texts(texts=x.to_list())
         joblib.dump(encoded, "features.pkl")
         joblib.dump(y_major, "main_labels.pkl")
         joblib.dump(y_minor, "sub_labels.pkl")
