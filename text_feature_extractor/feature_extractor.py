@@ -11,7 +11,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import joblib
 
-
 # adding cmd args
 arg = argparse.ArgumentParser()
 arg.add_argument('-g', '--gpt2', action="store_true", help="if used gpt2 flag then gpt2 tokenizer to get feature")
@@ -42,19 +41,16 @@ def main():
         Console().print("[cyan]Saved features.pkl, main_labels.pkl and sub_labels.pkl in \'command2code\' dir[/cyan]")
 
 
-def read_file(pth:str):
-
+def read_file(pth: str):
     df = pd.read_csv(pth)
 
     X = df['Commands'].values
     Y_main = df['Main Label'].values
     Y_sub = df['Sub label'].values
 
-#     TODO add hsitograms
+    #     TODO add hsitograms
 
     return X, Y_main, Y_sub
-
-
 
 
 def parse():
