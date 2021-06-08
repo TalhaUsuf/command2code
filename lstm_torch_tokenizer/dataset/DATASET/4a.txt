@@ -1,0 +1,11 @@
+
+	                DropDown [Country]
+	                {
+	                    Label: "Country";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: false;
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.Country];
+                           DataSource : [#Module.CatalogGroup.Common.Catalog.Country.Item];
+                           
+	                };

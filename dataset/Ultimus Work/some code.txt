@@ -1,0 +1,186 @@
+define UIElement [PassportInfo]
+{
+    LayoutPanel [Passort]
+    {
+        Label: "Passport Information";
+	    CustomStyle: "nowe-ll";
+	    LabelDisplay: "none";
+	    Display: "none";
+	    Layout
+	    {
+	        CSS : "";
+	        
+	       Row
+	        {
+	            Col
+	            {
+	                Size:4;
+                    Text [FirstName]
+                    {
+                       Label: "FirstName";
+                       LabelDisplay: "above";
+                       Display: "editable";
+                       Mandatory: true;
+                       Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.FirstName];
+                    };
+	            };
+	            Col
+	            {
+	                Size:4;
+                    Text [SurName]
+                    {
+                       Label: "Middle Name";
+                       LabelDisplay: "above";
+                       Display: "editable";
+                       Mandatory: false;
+                       Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.SurName];
+                    };
+	            };
+	            Col
+	            {
+	                Size:4;
+                    Text [LastName]
+                    {
+                       Label: "Last Name";
+                       LabelDisplay: "above";
+                       Display: "editable";
+                       Mandatory: true;
+                       Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.LastName];
+                    };
+	            };
+	        };
+	        Row
+	        {
+    	          Col
+    	          {
+    	              Size:4;
+    	              Date [DOB]
+    	              {
+    	                  Label: "Date of Birth";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: true;
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.DateOfBirth];
+    	              };
+    	          };
+    	          Col
+    	          {
+    	              Size:4;
+    	              RadioGroup [Gender]
+    	              {
+    	                  Label: "Gender";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Vertical : false;
+                           Mandatory: true;
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.Gender];
+                           DataSource : [#Module.CatalogGroup.Common.Catalog.Gender.Item];
+    	              };
+    	          };
+    	          Col
+    	          {
+    	              Size:4;
+    	              Date [issuanceDate]
+    	              {
+    	                  Label: "Issuance Date";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: true;
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.IssunceDate];
+    	              };
+    	          };
+	        };
+	        Row
+	        {
+	            Col
+	            {
+	                Size:4;
+	                DropDown [Country]
+	                {
+	                    Label: "Country";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: true;
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.Country];
+                           DataSource : [#Module.CatalogGroup.Common.Catalog.Country.Item];
+                           
+	                };
+	            };
+	            Col
+	            {
+	                Size:4;
+	                DropDown [Province]
+	                {
+	                    Label: "Province";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: true;
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.Province];
+                           DataSource : [#Module.CatalogGroup.Common.Catalog.Province.Item];
+                           
+	                };
+	            };
+	            Col
+	            {
+	                Size:4;
+	                DropDown [City]
+	                {
+	                    Label: "City";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: true;
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.City];
+                           DataSource : [#Module.CatalogGroup.Common.Catalog.City.Item];
+                           
+	                };
+	            };
+	        };
+	        Row
+	        {
+	            Col
+	            {
+	                Size:4;
+	                CheckBox [Active]
+	                {
+	                    Label: "";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: true;
+                           Caption: "Is Active?";
+                           Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.Active];
+                           
+                           
+	                };
+	            };
+	        };
+	        {
+	            Col
+	            {
+	                Size:4;
+	                Button [Save]
+	                {
+	                        Label: "Save Data";
+                           LabelDisplay: "above";
+                           Display: "editable";
+                           Mandatory: false;
+                           Caption: "Save Data";
+                           Event [OnClick]
+                           {
+                               Action : [#Module.ActionGroup.SQLActions.Action.InsertPassportInfo]
+                               {
+                                   Event [onSuccess]
+                                   {
+                                       Script: "console.log('InsertPassportInfo successfull')";
+                                   };
+                                   Event [onFail]
+                                   {
+                                       Script: "console.log('InsertPassportInfo Failed')";
+                                   };
+                               };
+                           };
+	                };
+	            };
+	        };
+	    };
+    };
+};

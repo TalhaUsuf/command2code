@@ -1,0 +1,11 @@
+
+                    Number [Age]
+                    {
+                       Label: "Age";
+                       LabelDisplay: "above";
+                       Display: "editable";
+                       Mandatory: false;
+                       Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.Age];
+                    };
+	         
+

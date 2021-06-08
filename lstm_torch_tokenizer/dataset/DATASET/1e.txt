@@ -1,0 +1,10 @@
+
+                    Text [Email]
+                    {
+                       Label: "Email";
+                       LabelDisplay: "above";
+                       Display: "editable";
+                       Mandatory: true;
+                       Value : [#Module.DataGroup.PassportInfo.Data.PassportInformation.FirstName];
+                    };
+
