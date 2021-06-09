@@ -62,7 +62,7 @@ def main():
         joblib.dump(encoded, "tfidf_features.pkl")
         joblib.dump(y_major, "main_labels.pkl")
         joblib.dump(y_minor, "sub_labels.pkl")
-        Console().print("[cyan]Saved tfidf_features.pkl, main_labels.pkl and sub_labels.pkl in \'command2code\' dir[/cyan]")
+        Console().print("[cyan]Saved tfidf_tokenizer.pkl, tfidf_features.pkl, main_labels.pkl and sub_labels.pkl in \'command2code\' dir[/cyan]")
 
     if parser.k:
         # for keras tokenizer do zero-padding
@@ -75,7 +75,7 @@ def main():
         joblib.dump(y_major, "main_labels.pkl")
         joblib.dump(y_minor, "sub_labels.pkl")
         Console().print(
-            "[cyan]Saved kerasTok_features.pkl, main_labels.pkl and sub_labels.pkl in \'command2code\' dir[/cyan]")
+            "[cyan]Saved keras_tokenizer.pkl, kerasTok_features.pkl, main_labels.pkl and sub_labels.pkl in \'command2code\' dir[/cyan]")
 
     if parser.g:
         encoded = tokenizer(x.tolist(), padding=True, add_special_tokens=False, pad_token=0)
@@ -94,7 +94,7 @@ def main():
         joblib.dump(y_major, "main_labels.pkl")
         joblib.dump(y_minor, "sub_labels.pkl")
         Console().print(
-            "[cyan]Saved bert_features.pkl, main_labels.pkl and sub_labels.pkl in \'command2code\' dir[/cyan]")
+            "[cyan]Saved bert_tokenizer.pkl, bert_features.pkl, main_labels.pkl and sub_labels.pkl in \'command2code\' dir[/cyan]")
 
 
 
