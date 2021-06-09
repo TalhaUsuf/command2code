@@ -70,19 +70,12 @@ def read_file(pth: str):
 
     """
     df = pd.read_csv(pth)
-    dftrain, dftest = train_test_split(df, test_size=0.20, stratify=df['Main Label'].values.tolist())
 
-    X_train = dftrain['Commands'].values
-    Y_main_train = dftrain['Main Label'].values
-    Y_sub_train = dftrain['Sub label'].values
-
-    X_test = dftest['Commands'].values
-    Y_main_test = dftest['Main Label'].values
-    Y_sub_test = dftest['Sub label'].values
-
-
+    X = df['Commands'].values
+    Y_main = df['Main Label'].values
+    Y_sub = df['Sub label'].values
     #     TODO add hsitograms
-    out = (X_train, Y_main_train, Y_sub_train)
+    out = (X, Y_main, Y_sub)
 
     return out
 

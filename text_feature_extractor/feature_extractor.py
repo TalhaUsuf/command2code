@@ -19,6 +19,7 @@ def main():
     tokenizer = get_tokenizer(parser)
     x, y_major, y_minor = read_file(pth="dataset/Ultimus Work/Commands_with_labels.csv")  # all are arrays
 
+
     if parser.t:
         # if tfidf is used then it is an instance of pipeline and should be treated differently
         encoded = tokenizer.fit_transform(x)
