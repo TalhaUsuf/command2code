@@ -41,7 +41,12 @@ def main(argv):
     if FLAGS.t:
         with Console().status("Working with tfidf features", spinner="aesthetic"):
             features = joblib.load("tfidf_features.pkl")
+            main_enc = joblib.load("enc_main.pkl") # loading the encoders
+            minor_enc = joblib.load("enc_sub.pkl") # loading the minor encoders
             Console().log(f"tfidf features shape ---> {features.A.shape}")
+
+            # update the cfg file accordingly
+            args.
 
             model = lstm_embedding_model(args)
             Console().print(model)
