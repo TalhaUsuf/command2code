@@ -22,9 +22,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from pathlib import Path
 import shutil
+from lstm_without_embedding.model import lstm_without_embedding_model
+from tqdm import trange
 
-
-
+sns.set_theme(style="darkgrid")
 
 
 
@@ -48,18 +49,71 @@ def main(argv):
 
 
     if FLAGS.t:
-        with Console().status("Working with tfidf features .... ", spinner="aesthetic"):
+        with Console().status("Working with tfidf features .... \n\n", spinner="aesthetic"):
             features = joblib.load("tfidf_features.pkl")
-
+            enc = joblib.load("enc_main.pkl")
+            labels = joblib.load("main_labels.pkl")
+            labels_enc=torch.from_numpy(enc.transform(labels))
+            Console().print(labels_enc)
+            # print(labels_enc)
+            print(35*"%")
             Console().log(f"tfidf features shape ---> {features.A.shape}")
-
-
-
-            model = lstm_embedding_model(args)
-            Console().print(model)
+            args.embed_dim = features.A.shape[-1]
+            config["embed_dim"] = features.A.shape[-1]
+            config["batch"] = features.A.shape[0]
+            args.batch = int(features.A.shape[0])
+            features = torch.from_numpy(features.A).type(torch.float32)
+            yaml.dump(config, open("lstm_torch_tokenizer/conf.yaml", "w"), yaml.SafeDumper)
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            #             tfidf cannot be used with embedding + lstm
+            #         For tfidf features, embedding-layer cannot
+            #                be used hence using lstm_without_embedding_model
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            model = lstm_without_embedding_model(args)
+            logs = {}
+            n = args.epochs
+            opt = torch.optim.AdamW(params=model.parameters(), lr=0.001)
+            schedule = LinearWarmupCosineAnnealingLR(
+                optimizer=opt,
+                warmup_epochs=int((1 / 4) * n),
+                max_epochs=n,
+            )
+            metric = F1(num_classes=args.classes,
+                        average="macro")
+            compute_loss = torch.nn.CrossEntropyLoss()
+            for epoch in trange(args.epochs, desc="Epoch:"):
+                # Console().log(f"input shape ---> {features.shape}")
+
+                # Console().log(f"input shape ---> {model(features).shape}")
+                opt.zero_grad()
+                out = model(features)
+                # Console().print(f"[cyan]{labels_enc.shape}")
+                # Console().print(f"[cyan]{out.shape}")
+                # print(35*"%")
+                loss = compute_loss(out, labels_enc)
+                logs.setdefault("loss", []).append(loss)
+                f1 = metric(out, labels_enc)
+                logs.setdefault("f1", []).append(f1)
+                logs.setdefault("epoch", []).append(epoch)
+                logs.setdefault("lr", []).append(schedule.get_lr()[0])
+                loss.backward()
+                opt.step()
+                schedule.step() # in epoch loop
+        with Console().status("plotting ...", spinner="aesthetic"):
+
+            data = pd.DataFrame(logs)
+
+            ax=sns.scatterplot(data=data, x="epoch", y="f1", hue="lr")
+            # plt.show()
+            ax.figure.savefig("lstm_without_embedding/epoch_f1.png", bbox_inches="tight", dpi=500)
+            plt.figure()
+            ay=sns.scatterplot(data=data, x="epoch", y="loss", hue="lr")
+            # plt.show()
+            ay.figure.savefig("lstm_without_embedding/epoch_loss.png", bbox_inches="tight", dpi=500)
+            az = sns.relplot(data=data, x="epoch", y="lr", kind="line")
+            # plt.show()
+            plt.savefig("lstm_without_embedding/epoch_lr.png", bbox_inches="tight", dpi=500)
+
+
     if FLAGS.k:
 #         perform training on keras feature-set
         with Console().status("Working with keras-tokenized-features ....", spinner="aesthetic"):
@@ -72,10 +126,7 @@ def main(argv):
             Console().log("Updated vocabulary size in yaml file ...")
             yaml.dump(config, open("./lstm_torch_tokenizer/conf.yaml","w"), yaml.SafeDumper)
 
-            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            #         For tfidf features, embedding-layer cannot
-            #                be used hence using lstm_without_embedding_model
-            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 

@@ -15,7 +15,7 @@ CUDA_FLAG = False
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #                      define model
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-class lstm_embedding_model(nn.Module):
+class lstm_without_embedding_model(nn.Module):
     """defines the `lstm model` with `embedding`
 
 
@@ -49,11 +49,11 @@ class lstm_embedding_model(nn.Module):
         :type args: argparse.ArgumentParser()
 
         """
-        super(lstm_embedding_model, self).__init__()
+        super(lstm_without_embedding_model, self).__init__()
         self.args = args
 
         if self.args.max_norm != "None":
-            Console().print(f"MAX_NORM ---> {self.args.max_norm}")
+            # Console().print(f"MAX_NORM ---> {self.args.max_norm}")
             self.embed = nn.Embedding(num_embeddings=self.args.vocab,
                                       embedding_dim=self.args.embed_dim,
                                       max_norm=self.args.max_norm,
@@ -101,7 +101,10 @@ class lstm_embedding_model(nn.Module):
                     requires_grad=True).cuda()
             )
         else:
+            # print(self.args.num_layers)
+            # print(self.args.num_directions)
             return (
+
                 torch.zeros(size=(
                     self.args.num_layers * self.args.num_directions, self.args.batch, self.args.lstm_hidden),
                     requires_grad=True),
@@ -110,7 +113,7 @@ class lstm_embedding_model(nn.Module):
                     requires_grad=True)
             )
 
-    def forward(self, inp, seq_len):
+    def forward(self, inp):
         """applies forward propagation loop
 
         :param inp: shape should be [N, D] where N is mini-batch size and D is seq-lenght
@@ -120,16 +123,24 @@ class lstm_embedding_model(nn.Module):
 
         """
         # print(inp)
+        # stateless lstm development
         self.hidden = self.init_hidden()
-        out = self.embed(inp)
+        # out = self.embed(inp)
+        # embedding layer cannot be used
+        # input ==> [N, dim] ---> [N, seq, dim]
+        out = torch.unsqueeze(inp, dim=1)  # [N, 1, dim]
 
-        out = pack_padded_sequence(out, seq_len, batch_first=True, enforce_sorted=False)
-        out, self.hidden = self.lstm(out, self.hidden)
+        # out = pack_padded_sequence(out, seq_len, batch_first=True, enforce_sorted=False)
+        # out, self.hidden = self.lstm(out, self.hidden)
+        out, self.hidden = self.lstm(out)
         # self.hidden[0] = self.hidden[0].cuda()
         # self.hidden[1] = self.hidden[1].cuda()
-        out, __ = pad_packed_sequence(sequence=out,
-                                      batch_first=True,
-                                      )
+        # out, __ = pad_packed_sequence(sequence=out,
+        #                               batch_first=True,
+        #                               )
+        # out = self.last_timestep(out, seq_len) # [batch size, seq_len, dims] ==> [batch size, dims]
+        out = out[:, -1, :]
+        # Console().print(f"shape after last_time_steps ----> {out.shape}")
         # out[:,-1,:] i.e. last time step contains many zeros after being passed through pad_packed_sequences
         # Solution: Use the cell-state or hidden-state
         # Console().print(f"out shape ==> {out.shape}")
@@ -142,7 +153,7 @@ class lstm_embedding_model(nn.Module):
         #
         # Choosing 'H' and leaving 'C'
         # print(f"%%%%%%%%%%%% {_[0].shape} %%%%%%%%%%")
-        out = self.hidden[0][-1]  # [num_layers * num_directions, batch, hidden_size]
+        # out = self.hidden[0][-1]  # [num_layers * num_directions, batch, hidden_size]
 
         # out = out[:,-1,:]
 
