@@ -12,7 +12,7 @@ import torch
 import yaml
 import torch
 from sklearn.utils.class_weight import compute_class_weight
-from torchmetrics import Accuracy, F1
+from torchmetrics import Accuracy, F1, ConfusionMatrix
 from tqdm import trange
 from rich.console import Console
 from torch.optim import AdamW
@@ -79,6 +79,7 @@ def main(argv):
             )
             metric = F1(num_classes=args.classes,
                         average="macro")
+            conf_mat = ConfusionMatrix( num_classes=args.classes)
             compute_loss = torch.nn.CrossEntropyLoss()
             for epoch in trange(args.epochs, desc="Epoch:"):
                 # Console().log(f"input shape ---> {features.shape}")
@@ -92,6 +93,8 @@ def main(argv):
                 loss = compute_loss(out, labels_enc)
                 logs.setdefault("loss", []).append(loss)
                 f1 = metric(out, labels_enc)
+                mat = conf_mat(out, labels_enc)
+                logs.setdefault("conf_mat", []).append(mat)
                 logs.setdefault("f1", []).append(f1)
                 logs.setdefault("epoch", []).append(epoch)
                 logs.setdefault("lr", []).append(schedule.get_lr()[0])
@@ -114,6 +117,7 @@ def main(argv):
             plt.savefig("lstm_without_embedding/epoch_lr.png", bbox_inches="tight", dpi=500)
 
 
+            data["conf_mat"].to_csv("lstm_without_embedding/conf_mat.csv")
     if FLAGS.k:
 #         perform training on keras feature-set
         with Console().status("Working with keras-tokenized-features ....", spinner="aesthetic"):
