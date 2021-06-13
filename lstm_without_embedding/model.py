@@ -7,7 +7,7 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from torch.autograd import Variable
 import torch
 from rich.console import Console
-
+ftom pathlib import Path
 # CUDA_FLAG = torch.cuda.is_available()
 CUDA_FLAG = False
 
@@ -166,3 +166,26 @@ class lstm_without_embedding_model(nn.Module):
         # Console().print(f"[cyan]after softmax[/cyan] [color(120)]{out.shape}[/color(120)]" )
 
         return out
+
+
+
+
+def save_ckp(state, is_best):
+    """
+
+
+    Parameters
+    ----------
+    state
+    is_best
+
+    Returns
+    -------
+
+    """
+    checkpoint_dir = Path("./saved_models").mkdir(exist_ok=True, parent=True)
+    f_path = checkpoint_dir / 'checkpoint.pt'
+    torch.save(state, f_path)
+    if is_best:
+        best_fpath = checkpoint_dir / 'best_model.pt'
+        torch.save(state, best_fpath)

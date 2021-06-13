@@ -1,6 +1,7 @@
 import joblib
 import numpy as np
 from rich.console import Console
+import shutil
 from absl.flags import FLAGS
 from absl import app, flags
 import time
@@ -22,12 +23,13 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from pathlib import Path
 import shutil
-from lstm_without_embedding.model import lstm_without_embedding_model
+from lstm_without_embedding.model import lstm_without_embedding_model, save
 from tqdm import trange
 
 sns.set_theme(style="darkgrid")
 
 
+# defining flags
 
 flags.DEFINE_bool('t', default=False, help="if given ---> performs training on tfidf features")
 flags.DEFINE_bool('k', default=False, help="if given ---> performs training on keras tokenized features")
@@ -130,7 +132,8 @@ def main(argv):
             Console().log("Updated vocabulary size in yaml file ...")
             yaml.dump(config, open("./lstm_torch_tokenizer/conf.yaml","w"), yaml.SafeDumper)
 
-
+            # TODO add the model checkpointing capability
+#             keras tokens are integers ---> add embedding lstm + pack-pad ...
 
 
 
