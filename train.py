@@ -23,13 +23,13 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from pathlib import Path
 import shutil
-from lstm_without_embedding.model import lstm_without_embedding_model, save
+from lstm_without_embedding.model import lstm_without_embedding_model, save_ckpt
 from tqdm import trange
 
 sns.set_theme(style="darkgrid")
 
 
-# defining flags
+# Defining flags
 
 flags.DEFINE_bool('t', default=False, help="if given ---> performs training on tfidf features")
 flags.DEFINE_bool('k', default=False, help="if given ---> performs training on keras tokenized features")
@@ -83,6 +83,7 @@ def main(argv):
                         average="macro")
             conf_mat = ConfusionMatrix( num_classes=args.classes)
             compute_loss = torch.nn.CrossEntropyLoss()
+            prev_loss = 0
             for epoch in trange(args.epochs, desc="Epoch:"):
                 # Console().log(f"input shape ---> {features.shape}")
 
@@ -100,6 +101,20 @@ def main(argv):
                 logs.setdefault("f1", []).append(f1)
                 logs.setdefault("epoch", []).append(epoch)
                 logs.setdefault("lr", []).append(schedule.get_lr()[0])
+
+                if epoch == 0:
+                    prev_loss = loss.detach().cpu()
+
+                if loss.detach().cpu() < prev_loss and epoch != 0:
+                    state = {
+                        'epoch': epoch + 1,
+                        'state_dict': model.state_dict(),
+                        'optimizer': opt.state_dict(),
+                        'scheduler' : schedule.state_dict()
+                    }
+                    save_ckpt(state, True)
+                    prev_loss = loss.detach().cpu()
+
                 loss.backward()
                 opt.step()
                 schedule.step() # in epoch loop

@@ -7,7 +7,7 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from torch.autograd import Variable
 import torch
 from rich.console import Console
-ftom pathlib import Path
+from pathlib import Path
 # CUDA_FLAG = torch.cuda.is_available()
 CUDA_FLAG = False
 
@@ -170,22 +170,26 @@ class lstm_without_embedding_model(nn.Module):
 
 
 
-def save_ckp(state, is_best):
+def save_ckpt(state, is_best):
     """
-
+    saves the model checkpoints to `/command2code/lstm_without_embedding/saved_models/`
 
     Parameters
     ----------
-    state
-    is_best
+    state : dictionary
+        "epoch", "state_dict", "optimizer" are keys within state
+    is_best : bool
+        whether to save the model best checkpoint or not
 
     Returns
     -------
-
+    None
     """
-    checkpoint_dir = Path("./saved_models").mkdir(exist_ok=True, parent=True)
-    f_path = checkpoint_dir / 'checkpoint.pt'
-    torch.save(state, f_path)
+    Path("./lstm_without_embedding/saved_models").mkdir(exist_ok=True, parents=True)
+    checkpoint_dir = Path("./lstm_without_embedding/saved_models")
+    if not is_best:
+        f_path = checkpoint_dir / f'checkpoint_epoch_{state["epoch"]}.pt'
+        torch.save(state, f_path)
     if is_best:
         best_fpath = checkpoint_dir / 'best_model.pt'
         torch.save(state, best_fpath)
