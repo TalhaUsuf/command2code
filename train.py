@@ -28,11 +28,34 @@ from tqdm import trange
 
 sns.set_theme(style="darkgrid")
 
-
 # Defining flags
 
 flags.DEFINE_bool('t', default=False, help="if given ---> performs training on tfidf features")
 flags.DEFINE_bool('k', default=False, help="if given ---> performs training on keras tokenized features")
+
+
+# modified from https://github.com/pytorch/examples/blob/2639cf050493df9d3cbf065d45e6025733add0f4/word_language_model/main.py#L138
+def evaluate(data_source):
+
+    # Turn on evaluation mode which disables dropout.
+    model.eval()
+    total_loss = 0.
+    ntokens = len(corpus.dictionary)
+    if args.model != 'Transformer':
+        hidden = model.init_hidden(eval_batch_size)
+    with torch.no_grad():
+        for i in range(0, data_source.size(0) - 1, args.bptt):
+            data, targets = get_batch(data_source, i)
+            if args.model == 'Transformer':
+                output = model(data)
+                output = output.view(-1, ntokens)
+            else:
+                output, hidden = model(data, hidden)
+                hidden = repackage_hidden(hidden)
+            total_loss += len(data) * criterion(output, targets).item()
+    return total_loss / (len(data_source) - 1)
+
+
 
 
 def main(argv):
@@ -47,18 +70,17 @@ def main(argv):
         N_classes = len(main_enc.classes_)
         # update the cfg file accordingly
         args.classes = N_classes
-        config["classes"] = N_classes # update the yaml file
-
+        config["classes"] = N_classes  # update the yaml file
 
     if FLAGS.t:
         with Console().status("Working with tfidf features .... \n\n", spinner="aesthetic"):
             features = joblib.load("tfidf_features.pkl")
             enc = joblib.load("enc_main.pkl")
             labels = joblib.load("main_labels.pkl")
-            labels_enc=torch.from_numpy(enc.transform(labels))
+            labels_enc = torch.from_numpy(enc.transform(labels))
             Console().print(labels_enc)
             # print(labels_enc)
-            print(35*"%")
+            print(35 * "%")
             Console().log(f"tfidf features shape ---> {features.A.shape}")
             args.embed_dim = features.A.shape[-1]
             config["embed_dim"] = features.A.shape[-1]
@@ -81,10 +103,17 @@ def main(argv):
             )
             metric = F1(num_classes=args.classes,
                         average="macro")
-            conf_mat = ConfusionMatrix( num_classes=args.classes)
+            conf_mat = ConfusionMatrix(num_classes=args.classes)
             compute_loss = torch.nn.CrossEntropyLoss()
             prev_loss = 0
+            # ```````````````````````````````````````````````````````````
+            # `````````````````` VALIDATION DATA ````````````````````````
+            # ```````````````````````````````````````````````````````````
+            val_data = torch.from_numpy(joblib.load("./val_tfidf.pkl").A).type(torch.float32)
+            val_labels_major = torch.from_numpy(enc.transform(joblib.load("./val_y_main.pkl"))).type(torch.float32)
+            # ```````````````````````````````````````````````````````````
             for epoch in trange(args.epochs, desc="Epoch:"):
+                model.train()
                 # Console().log(f"input shape ---> {features.shape}")
 
                 # Console().log(f"input shape ---> {model(features).shape}")
@@ -110,33 +139,33 @@ def main(argv):
                         'epoch': epoch + 1,
                         'state_dict': model.state_dict(),
                         'optimizer': opt.state_dict(),
-                        'scheduler' : schedule.state_dict()
+                        'scheduler': schedule.state_dict()
                     }
                     save_ckpt(state, True)
                     prev_loss = loss.detach().cpu()
 
                 loss.backward()
                 opt.step()
-                schedule.step() # in epoch loop
+                schedule.step()  # in epoch loop
+
         with Console().status("plotting ...", spinner="aesthetic"):
 
             data = pd.DataFrame(logs)
 
-            ax=sns.scatterplot(data=data, x="epoch", y="f1", hue="lr")
+            ax = sns.scatterplot(data=data, x="epoch", y="f1", hue="lr")
             # plt.show()
             ax.figure.savefig("lstm_without_embedding/epoch_f1.png", bbox_inches="tight", dpi=500)
             plt.figure()
-            ay=sns.scatterplot(data=data, x="epoch", y="loss", hue="lr")
+            ay = sns.scatterplot(data=data, x="epoch", y="loss", hue="lr")
             # plt.show()
             ay.figure.savefig("lstm_without_embedding/epoch_loss.png", bbox_inches="tight", dpi=500)
             az = sns.relplot(data=data, x="epoch", y="lr", kind="line")
             # plt.show()
             plt.savefig("lstm_without_embedding/epoch_lr.png", bbox_inches="tight", dpi=500)
 
-
             data["conf_mat"].to_csv("lstm_without_embedding/conf_mat.csv")
     if FLAGS.k:
-#         perform training on keras feature-set
+        #         perform training on keras feature-set
         with Console().status("Working with keras-tokenized-features ....", spinner="aesthetic"):
             features = joblib.load("kerasTok_features.pkl")
             Console().log("read the features file")
@@ -145,15 +174,13 @@ def main(argv):
             args.vocab = vocab
             config["vocab"] = vocab
             Console().log("Updated vocabulary size in yaml file ...")
-            yaml.dump(config, open("./lstm_torch_tokenizer/conf.yaml","w"), yaml.SafeDumper)
+            yaml.dump(config, open("./lstm_torch_tokenizer/conf.yaml", "w"), yaml.SafeDumper)
 
             # TODO add the model checkpointing capability
+
+
 #             keras tokens are integers ---> add embedding lstm + pack-pad ...
 
 
-
-
-
-if __name__=='__main__':
+if __name__ == '__main__':
     app.run(main)
-

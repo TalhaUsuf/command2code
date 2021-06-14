@@ -63,6 +63,20 @@ def main():
         joblib.dump(y_major, "main_labels.pkl")
         joblib.dump(y_minor, "sub_labels.pkl")
         Console().print("[cyan]Saved tfidf_tokenizer.pkl, tfidf_features.pkl, main_labels.pkl and sub_labels.pkl in \'command2code\' dir[/cyan]")
+        
+        # if --predict flag -----> calculate features of the prediciton dataset.
+        if parser.validate:
+
+            df = pd.read_csv("./dataset/validation_data/val.csv")
+            X_val = df['Commands'].values
+            Y_main_val = df['Main Label'].values
+            Y_sub_val = df['Sub label'].values
+            X_val = tokenizer.transform(X_val) # tfidf encoded
+            joblib.dump(X_val, "val_tfidf.pkl")
+            joblib.dump(Y_main_val, "val_y_main.pkl")
+            joblib.dump(Y_sub_val, "val_y_sub.pkl")
+            Console().log("pickled the validation dataset features ....")
+
 
     if parser.k:
         # for keras tokenizer do zero-padding

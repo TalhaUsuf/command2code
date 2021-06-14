@@ -9,6 +9,7 @@ from sklearn.pipeline import Pipeline
 import argparse
 from sklearn.model_selection import train_test_split
 
+
 def get_args():
     # adding cmd args
     arg = argparse.ArgumentParser(description="this script uses feature extraction methods")
@@ -17,6 +18,8 @@ def get_args():
     arg.add_argument('-b', action="store_true", help="if flag given then bert will used as tokenizer")
     arg.add_argument('-k', action="store_true", help="if flag given then keras will used as tokenizer")
     arg.add_argument('-ng', '--ngrams', default=4, type=int, help="ngrams used for tfidf")
+    arg.add_argument('-v', '--validate', action="store_true", help="if flag is given then ;"
+                                                                   "validation dataset will also be converted to features inside validation_dataset folder")
     parser = arg.parse_args()
 
     return parser
@@ -24,7 +27,6 @@ def get_args():
 
 def get_tokenizer(parser):
     if parser.g:
-
         Console().print(f"[red]GPT2 will be used as tokenizer[/red]")
         tok = GPT2TokenizerFast.from_pretrained('gpt2')
 
@@ -48,9 +50,7 @@ def get_tokenizer(parser):
         # TODO remove the # from filters
         tok = tf.keras.preprocessing.text.Tokenizer(lower=True)
 
-
     return tok
-
 
 
 def read_file(pth: str):
@@ -78,5 +78,3 @@ def read_file(pth: str):
     out = (X, Y_main, Y_sub)
 
     return out
-
-
