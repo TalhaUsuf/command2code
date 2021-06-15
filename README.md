@@ -9,7 +9,7 @@
 # Paths
 | Train | Test |
 | :---------- | :-------------|
-|[click here](https://bitbucket.org/nahmed_Ultimus/ai_all-assignments/src/03dd7b0ed8bc2b734835a2ea400620a54e30a6df/dataset/Ultimus%20Work/Commands_with_labels.csv#lines-1)       |   [click here](https://bitbucket.org/nahmed_Ultimus/ai_all-assignments/src/03dd7b0ed8bc2b734835a2ea400620a54e30a6df/dataset/validation_data/val.csv#lines-1 |)
+|[click here](https://bitbucket.org/nahmed_Ultimus/ai_all-assignments/src/03dd7b0ed8bc2b734835a2ea400620a54e30a6df/dataset/Ultimus%20Work/Commands_with_labels.csv#lines-1)       |   [click here](https://bitbucket.org/nahmed_Ultimus/ai_all-assignments/src/03dd7b0ed8bc2b734835a2ea400620a54e30a6df/dataset/validation_data/val.csv#lines-1) |
 
 
 
