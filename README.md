@@ -6,15 +6,24 @@
 - [LSTM-without-embedding](lstm_without_embedding)
 
 
+# Paths
+| Train | Test |
+| :---------- | :-------------|
+
+
+
 
 # Main Classifier Results
 
 | | sklearn tfidf+lstm without embedding | keras tokens+lstm with embedding |
 |:-----| :-----------------: | :-----------: |
-|**F1** | ![](lstm_without_embedding/epoch_f1.png)| |
-|**Loss** | ![](lstm_without_embedding/epoch_loss.png)|  |
+|**Train F1** | ![](lstm_without_embedding/epoch_f1.png)| |
+| **Val F1** | ![](lstm_without_embedding/val_epoch_f1.png)| |
+|**Train Loss** | ![](lstm_without_embedding/epoch_loss.png)|  |
 | **LR** |![](lstm_without_embedding/epoch_lr.png)|  |
-| **Conf. Mat** | 
+| **Train Conf. Mat** |  [[ 51.,   0.],[  0., 166.]]  |
+| **Test Conf. Mat** |  [[0.0, 0.0], [139.0, 1310.0]]  |
+
 
 # Explanation
 
