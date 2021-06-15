@@ -3,10 +3,10 @@ classes: 2
 dataset: dataset/commands2code.csv
 dropout: 0.5
 embed_dim: 1015
-epochs: 150
+epochs: 200
 hidden_1: 1024
 lstm_hidden: 64
 max_norm: 1.0
 num_directions: 2
 num_layers: 2
-vocab: 16
+vocab: 76

@@ -39,6 +39,7 @@ def main():
     parser = get_args()
     tokenizer = get_tokenizer(parser)
     x, y_major, y_minor = read_file(pth="dataset/Ultimus Work/Commands_with_labels.csv")  # all are arrays
+    # x, y_major, y_minor = read_file(pth="dataset/Ultimus Work/train.csv")  # all are arrays
 
     # 1) encode the labels
     encoder_main = LabelEncoder()

@@ -34,31 +34,26 @@ flags.DEFINE_bool('t', default=False, help="if given ---> performs training on t
 flags.DEFINE_bool('k', default=False, help="if given ---> performs training on keras tokenized features")
 
 
-# modified from https://github.com/pytorch/examples/blob/2639cf050493df9d3cbf065d45e6025733add0f4/word_language_model/main.py#L138
-def evaluate(data_source):
-
-    # Turn on evaluation mode which disables dropout.
-    model.eval()
-    total_loss = 0.
-    ntokens = len(corpus.dictionary)
-    if args.model != 'Transformer':
-        hidden = model.init_hidden(eval_batch_size)
-    with torch.no_grad():
-        for i in range(0, data_source.size(0) - 1, args.bptt):
-            data, targets = get_batch(data_source, i)
-            if args.model == 'Transformer':
-                output = model(data)
-                output = output.view(-1, ntokens)
-            else:
-                output, hidden = model(data, hidden)
-                hidden = repackage_hidden(hidden)
-            total_loss += len(data) * criterion(output, targets).item()
-    return total_loss / (len(data_source) - 1)
-
-
 
 
 def main(argv):
+    # modified from https://github.com/pytorch/examples/blob/2639cf050493df9d3cbf065d45e6025733add0f4/word_language_model/main.py#L138
+    def evaluate(model: torch.nn.Module, logs: dict, val_data: torch.Tensor, val_labels: torch.Tensor):
+        # Turn on evaluation mode which disables dropout.
+        model.eval()
+
+        with torch.no_grad():
+            out = model(val_data)
+            # Console().print(f"[cyan]{labels_enc.shape}")
+            # Console().print(f"[cyan]{out.shape}")
+            # print(35*"%")
+            val_loss = compute_loss(out, val_labels)
+
+            val_f1 = metric(out, val_labels)
+            val_mat = conf_mat(out, val_labels)
+
+            return val_loss.detach().cpu().numpy().tolist(), val_f1.numpy().tolist(), val_mat.numpy().tolist()
+
     Console().rule(title="[bold red]Training Script[/bold red]", style="red on black", align="center")
 
     with Console().status("Loading the yaml config file ...."):
@@ -110,7 +105,7 @@ def main(argv):
             # `````````````````` VALIDATION DATA ````````````````````````
             # ```````````````````````````````````````````````````````````
             val_data = torch.from_numpy(joblib.load("./val_tfidf.pkl").A).type(torch.float32)
-            val_labels_major = torch.from_numpy(enc.transform(joblib.load("./val_y_main.pkl"))).type(torch.float32)
+            val_labels_major = torch.from_numpy(enc.transform(joblib.load("./val_y_main.pkl")))
             # ```````````````````````````````````````````````````````````
             for epoch in trange(args.epochs, desc="Epoch:"):
                 model.train()
@@ -123,11 +118,11 @@ def main(argv):
                 # Console().print(f"[cyan]{out.shape}")
                 # print(35*"%")
                 loss = compute_loss(out, labels_enc)
-                logs.setdefault("loss", []).append(loss)
+                logs.setdefault("loss", []).append(loss.detach().cpu().numpy().tolist())
                 f1 = metric(out, labels_enc)
                 mat = conf_mat(out, labels_enc)
                 logs.setdefault("conf_mat", []).append(mat)
-                logs.setdefault("f1", []).append(f1)
+                logs.setdefault("f1", []).append(f1.numpy().tolist())
                 logs.setdefault("epoch", []).append(epoch)
                 logs.setdefault("lr", []).append(schedule.get_lr()[0])
 
@@ -145,8 +140,16 @@ def main(argv):
                     prev_loss = loss.detach().cpu()
 
                 loss.backward()
-                opt.step()
+                opt.step()  # in batch-loop
                 schedule.step()  # in epoch loop
+
+                # ``````````````````````````````````````````````````````````
+                # ````````````````` EVAL LOOP ``````````````````````````````
+                # ``````````````````````````````````````````````````````````
+                v_l, v_f1, v_mat = evaluate(model, logs, val_data, val_labels_major)
+                logs.setdefault("val_loss", []).append(v_l)
+                logs.setdefault("val_f1", []).append(v_f1)
+                logs.setdefault("val_mat", []).append(v_mat)
 
         with Console().status("plotting ...", spinner="aesthetic"):
 
@@ -163,7 +166,20 @@ def main(argv):
             # plt.show()
             plt.savefig("lstm_without_embedding/epoch_lr.png", bbox_inches="tight", dpi=500)
 
+            # print(data.head(20))
+            plt.figure()
+            ak = sns.scatterplot(data=data, x="epoch", y="val_f1", hue="val_f1")
+            # ak = sns.scatterplot(data=data, x="epoch", y="f1", hue="f1")
+            # plt.show()
+            plt.savefig("lstm_without_embedding/val_epoch_f1.png", bbox_inches="tight")
+            
+
+            # confusion metrics
             data["conf_mat"].to_csv("lstm_without_embedding/conf_mat.csv")
+            data["val_mat"].to_csv("lstm_without_embedding/val_conf_mat.csv")
+
+
+
     if FLAGS.k:
         #         perform training on keras feature-set
         with Console().status("Working with keras-tokenized-features ....", spinner="aesthetic"):
