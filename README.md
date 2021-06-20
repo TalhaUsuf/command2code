@@ -1,3 +1,11 @@
+# Table of Contents
+
+- [Introduction](#introduction)
+- [Paths to datasets](#paths)
+- [Main Classifier Results](#main-classifier-results)
+- [Sub-Classifier Results](#sub-classifier-results)
+- [Pre-Processing for SUB-CLASSIFIERS](#text-preprocessing-for-sub-classifiers)
+
 # Introduction 
 
 
@@ -23,6 +31,29 @@
 | **LR** |![](lstm_without_embedding/epoch_lr.png)|  |
 | **Train Conf. Mat** |  [[ 51.,   0.],[  0., 166.]]  |
 | **Test Conf. Mat** |  [[0.0, 0.0], [139.0, 1310.0]]  |
+
+
+# Sub Classifier Results
+
+# Text preprocessing for Sub-Classifiers
+
+>> **Note** See results after each operation to check it doesn't remove keywords from the text
+
+1. Conver to Lowercase
+1. Removal of punctuations
+1. Removal of english stop words
+1. Removal of frequent words
+1. Remove Rare words
+1. Stemming
+1. Lemmatizing
+1. Remove Emojis
+1. Remove Emoticons
+1. Convert emoticons to words
+1. Convert emojis to words
+1. Remove URLs 
+1. Remove HTML tags
+1. Chat words conversion
+1. Spelling correction
 
 
 # Explanation
