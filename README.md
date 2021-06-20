@@ -35,6 +35,7 @@
 
 # Sub Classifier Results
 
+<a name="text-preprocessing-for-sub-classifiers"></a>
 # Text preprocessing for Sub-Classifiers
 
 >> **Note** See results after each operation to check it doesn't remove keywords from the text
