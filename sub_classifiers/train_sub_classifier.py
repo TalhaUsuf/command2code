@@ -27,7 +27,7 @@ from nltk.tokenize import word_tokenize
 from spacy.lang.en import English
 import string
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-
+from collections import Counter
 
 # Creating our tokenizer function
 def spacy_tokenizer(sentence):
@@ -93,6 +93,14 @@ class pre_process(BaseEstimator, TransformerMixin):
         # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # select_cols = select_cols.apply(lambda x : [" ".join([word for word in word_tokenize(k) if not word in STOP_WORDS]) for k in x])
         # removal of frequent words
+        c = Counter()
+        for cmd in select_cols.values.tolist():
+            print(cmd)
+            for word in cmd[0].split():
+                c[word] += 1
+        Console().log(f"Two most common words are ==> {c.most_common(2)}")
+        FREQ_WORDS = [k for k,w in c.most_common(1)]
+        select_cols = select_cols.apply(lambda x:[" ".join([i for i in k.split() if i not in FREQ_WORDS]) for k in x])
 
         return select_cols
 m = make_pipeline(pre_process(["Commands"]))
