@@ -4,7 +4,7 @@
 - [LSTM-keras](lstm_keras_nltk)
 - [LSTM-pytorch](lstm_torch_tokenizer)
 - [LSTM-without-embedding](lstm_without_embedding)
-
+- [Sub-Classifier Train](./sub_classifiers)
 
 # Paths
 | Train | Test |
