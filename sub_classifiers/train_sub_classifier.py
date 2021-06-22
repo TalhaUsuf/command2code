@@ -4,6 +4,11 @@ import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 import matplotlib.pyplot as plt  # data visualization
 import seaborn as sns  # data visualization
 import re
+import nltk
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+from nltk.corpus import wordnet
+from nltk.stem import WordNetLemmatizer
 from sklearn.model_selection import train_test_split, KFold, cross_val_score  # tran and test data split
 from sklearn.linear_model import LogisticRegression  # Logistic Regression
 from sklearn.svm import SVC  # Support Vector Machine
@@ -82,7 +87,8 @@ def clean_text(text):
 
 class pre_process(BaseEstimator, TransformerMixin):
     def __init__(self, columns: list):
-
+        self.lemmatizer = WordNetLemmatizer()
+        self.wordnet_map = {"N": wordnet.NOUN, "V": wordnet.VERB, "J": wordnet.ADJ, "R": wordnet.ADV}
         self.columns = columns
     def fit(self, X, y=None, **fitparams):
         return self
@@ -126,7 +132,10 @@ class pre_process(BaseEstimator, TransformerMixin):
         # Lemmatization
         # Lemmatization is similar to stemming in reducing inflected words to their word stem but differs in the way that it makes sure the root word (also called as lemma) belongs to the language.
 
+        # select_cols = select_cols.apply(lambda x : [" ".join([token.lemma_ for token in self.parser(k)]) for k in x])
 
+        # in advenced lemmatization ---> words are reduced by considering their parts of speech
+        select_cols = select_cols.apply(lambda x : [" ".join([self.lemmatizer.lemmatize(word, self.wordnet_map.get(pos[0], wordnet.VERB)) for word, pos in  nltk.pos_tag(k.split())]) for k in x])
 
 
         return select_cols
@@ -135,11 +144,12 @@ class pre_process(BaseEstimator, TransformerMixin):
 
 
 
-data = pd.read_csv(Path("dataset/validation_data/val.csv").as_posix(), skipinitialspace=True)
-m = make_pipeline(pre_process(["Commands"]))
-
-Console().print(m.transform(data))
-# m.transform(data)
+#
+# data = pd.read_csv(Path("dataset/validation_data/val.csv").as_posix(), skipinitialspace=True)
+# m = make_pipeline(pre_process(["Commands"]))
+#
+# Console().print(m.transform(data))
+# # m.transform(data)
 
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -155,38 +165,43 @@ Console().print(m.transform(data))
 
 
 
-#
-#
-#
-#
-# def main():
-#     with Console().status("pre-processing ....", spinner="bouncingBall"):
-#         data = pd.read_csv(Path("dataset/validation_data/val.csv").as_posix(), skipinitialspace=True)
-#         data = data[data["Main Label"] == "textbox"]
-#         data = data.drop(columns=["Main Label"])
-#         Console().print(data.shape)
-#         Console().print(f"columns are ----> {data.columns.tolist()}")
-#         Console().print(f"columns dtypes ----> {data.dtypes}")
-#
-#         enc = LabelEncoder()
-#         # pipeline doesnot operate on the labels
-#         Y = enc.fit_transform(data['Sub label'].tolist())
-#         # make column transformer to process the 'commands' column.
-#         trf_command = make_column_transformer((predictors(), "Commands"))
-#
-#         process_commands = Pipeline(steps=[("commands_column", predictors()),
-#                                            ('count', CountVectorizer(tokenizer=spacy_tokenizer, ngram_range=(1, 4))),
-#                                            ('clf', SVC())])
-#
-#     #
-#     # with Console().status("training ....", spinner="aesthetic"):
-#     #     # data = process_commands.fit_transform(data['Commands'].tolist())
-#     #     folds = 3
-#     #     cv = KFold(n_splits=(folds - 1))
-#     #     scores = cross_val_score(process_commands, data['Commands'].tolist(), Y, cv=cv)
-#     #     # data = process_commands.fit_transform(data['Commands'].tolist())
-#     #     Console().print(scores)
-#
-#
-# if __name__ == '__main__':
-#     main()
+
+
+
+
+def main():
+    with Console().status("pre-processing ....", spinner="bouncingBall"):
+        data = pd.read_csv(Path("dataset/validation_data/val.csv").as_posix(), skipinitialspace=True)
+        data = data[data["Main Label"] == "textbox"]
+        data = data.drop(columns=["Main Label"])
+        Console().print(data.shape)
+        Console().print(f"columns are ----> {data.columns.tolist()}")
+        Console().print(f"columns dtypes ----> {data.dtypes}")
+
+        enc = LabelEncoder()
+        # pipeline doesnot operate on the labels
+        Y = enc.fit_transform(data['Sub label'].tolist())
+        # make column transformer to process the 'commands' column.
+
+        # process_commands = Pipeline(steps=[("pre_process", pre_process(["Commands"])),
+        #                                    # ('count', CountVectorizer(tokenizer=spacy_tokenizer, ngram_range=(1, 4))),
+        #                                    ('count', CountVectorizer( ngram_range=(1, 4))),
+        #                                    ('clf', SVC())])
+        process_commands = make_pipeline( pre_process(['Commands']) , CountVectorizer( ngram_range=(1, 4)) , SVC() )
+
+
+    # with Console().status("training ....", spinner="aesthetic"):
+    #     # data = process_commands.fit_transform(data['Commands'].tolist())
+    #     folds = 5
+    #     cv = KFold(n_splits=(folds - 1))
+    #     Console().log(data.shape)
+    #     Console().log(len(Y))
+    #     scores = cross_val_score(process_commands, data, np.array(Y), cv=cv)
+    #     # data = process_commands.fit_transform(data['Commands'].tolist())
+    #     Console().print(scores)
+    
+        pre_process.fit_transform(data, Y)
+
+
+if __name__ == '__main__':
+    main()
