@@ -4,7 +4,9 @@ import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 import matplotlib.pyplot as plt  # data visualization
 import seaborn as sns  # data visualization
 import re
+from sklearn.model_selection import train_test_split
 import nltk
+from sklearn.ensemble import VotingClassifier
 
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
@@ -14,10 +16,11 @@ from sklearn.model_selection import train_test_split, KFold, cross_val_score, le
 from sklearn.linear_model import LogisticRegression  # Logistic Regression
 from sklearn.svm import SVC  # Support Vector Machine
 from sklearn.ensemble import RandomForestClassifier  # Random Rorest Classifier
-from sklearn.metrics import roc_auc_score  # ROC and AUC
-from sklearn.metrics import accuracy_score  # Accuracy
+from sklearn.metrics import roc_curve, confusion_matrix  # ROC and AUC
+from sklearn.metrics import accuracy_score, precision_recall_curve  # Accuracy
 from sklearn.metrics import recall_score  # Recall
-from sklearn.metrics import precision_score  # Prescison
+from sklearn.metrics import precision_score  # Prescisonfr
+from sklearn.preprocessing import label_binarize
 from sklearn.metrics import classification_report  # Classification Score Report
 from sklearn.svm import SVC
 from rich.console import Console
@@ -34,10 +37,11 @@ from spacy.lang.en.stop_words import STOP_WORDS
 from nltk.tokenize import word_tokenize
 from spacy.lang.en import English
 import string
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from collections import Counter
 from sklearn.metrics import classification_report
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
+
 
 # # Creating our tokenizer function
 # def spacy_tokenizer(sentence):
@@ -161,16 +165,17 @@ class Reshape(BaseEstimator, TransformerMixin):
         return out
 
 
-class Vectorizer(BaseEstimator, TransformerMixin):
-    def __init__(self):
-        super(Vectorizer, self).__init__()
+# class Vectorizer(BaseEstimator, TransformerMixin):
+#     def __init__(self):
+#         super(Vectorizer, self).__init__()
+#
+#     def fit(self, X, y=None):
+#         self.vec = CountVectorizer(ngram_range=(1, 4))
+#         return self
+#
+#     def transform(self, X):
+#         return self.vec.fit_transform(X).toarray()
 
-    def fit(self, X, y=None):
-        self.vec = CountVectorizer(ngram_range=(1, 4))
-        return self
-
-    def transform(self, X):
-        return self.vec.fit_transform(X).toarray()
 
 
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
@@ -244,10 +249,92 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
 
 
 def main():
+    def plot_confusion_matrix(cm,
+                              target_names,
+
+                              title='Confusion matrix',
+                              cmap=None,
+                              normalize=True):
+        """
+        given a sklearn confusion matrix (cm), make a nice plot
+
+        Arguments
+        ---------
+        cm:           confusion matrix from sklearn.metrics.confusion_matrix
+
+        target_names: given classification classes such as [0, 1, 2]
+                      the class names, for example: ['high', 'medium', 'low']
+
+        title:        the text to display at the top of the matrix
+
+        cmap:         the gradient of the values displayed from matplotlib.pyplot.cm
+                      see http://matplotlib.org/examples/color/colormaps_reference.html
+                      plt.get_cmap('jet') or plt.cm.Blues
+
+        normalize:    If False, plot the raw numbers
+                      If True, plot the proportions
+
+        Usage
+        -----
+        plot_confusion_matrix(cm           = cm,                  # confusion matrix created by
+                                                                  # sklearn.metrics.confusion_matrix
+                              normalize    = True,                # show proportions
+                              target_names = y_labels_vals,       # list of names of the classes
+                              title        = best_estimator_name) # title of graph
+
+        Citiation
+        ---------
+        http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
+
+        """
+        import matplotlib.pyplot as plt
+        import numpy as np
+        import itertools
+
+        accuracy = np.trace(cm) / np.sum(cm).astype('float')
+        misclass = 1 - accuracy
+
+        if cmap is None:
+            cmap = plt.get_cmap('Blues')
+
+        plt.figure(figsize=(8, 6))
+        plt.imshow(cm, interpolation='nearest', cmap=cmap)
+        plt.title(title)
+        plt.colorbar()
+
+        if target_names is not None:
+            tick_marks = np.arange(len(target_names))
+            plt.xticks(tick_marks, target_names, rotation=45)
+            plt.yticks(tick_marks, target_names)
+
+        if normalize:
+            cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+        thresh = cm.max() / 1.5 if normalize else cm.max() / 2
+        for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+            if normalize:
+                plt.text(j, i, "{:0.4f}".format(cm[i, j]),
+                         horizontalalignment="center",
+                         color="white" if cm[i, j] > thresh else "black")
+            else:
+                plt.text(j, i, "{:,}".format(cm[i, j]),
+                         horizontalalignment="center",
+                         color="white" if cm[i, j] > thresh else "black")
+
+        plt.tight_layout()
+        plt.ylabel('True label')
+        plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
+        plt.savefig(f"./confusion_matrix_{tag}.png", dpi=400, bbox_inches="tight")
+        plt.show()
+
     with Console().status("pre-processing ....", spinner="bouncingBall"):
-        data = pd.read_csv(Path("/home/talha/PycharmProjects/command2code/dataset/validation_data/val.csv").as_posix(),
+        data = pd.read_csv(Path("/home/talha/PycharmProjects/command2code/dataset/validation_data/command2code.csv").as_posix(),
                            skipinitialspace=True)
-        data = data[data["Main Label"] == "textbox"]
+
+        tag = "radiogroup"
+
+
+        data = data[data["Main Label"] == tag]
         data = data.drop(columns=["Main Label"])
         Console().print(data.shape)
         Console().print(f"columns are ----> {data.columns.tolist()}")
@@ -255,33 +342,92 @@ def main():
 
         enc = LabelEncoder()
         # pipeline doesnot operate on the labels
+
+        # Y = label_binarize(data['Sub label'].tolist(), classes=[*range(3)])
         Y = enc.fit_transform(data['Sub label'].tolist())
+
         # make column transformer to process the 'commands' column.
         vec = CountVectorizer(ngram_range=(1, 4))
         clf = SVC()
 
         svc = Pipeline([
-            ("vec", Vectorizer()),
-            # ("tfidf", TfidfVectorizer()),
-            ("svc", SVC())
+            ("vec", CountVectorizer(ngram_range=(1, 4))),
+            ("tfidf", TfidfTransformer()),
+            ("svc", SVC(probability=True))
         ])
         logistic = Pipeline([
-            ("vec", Vectorizer()),
-            # ("tfidf", TfidfVectorizer()),
-            ("logistic_CV",LogisticRegressionCV(cv=5, multi_class="ovr") )
+            # ("vec", Vectorizer()),
+            ("vec", CountVectorizer(ngram_range=(1, 4))),
+            ("tfidf", TfidfTransformer()),
+            ("logistic_CV", LogisticRegressionCV(cv=5, multi_class="ovr"))
         ])
 
         process_commands = Pipeline(steps=[("pre_process", pre_process(["Commands"])),
                                            ("reshape", Reshape()),
                                            ])
 
-        processed = process_commands.fit_transform(data, Y)
+        X_train, X_test, y_train, y_test = train_test_split(data, Y, test_size=0.30, stratify=Y)
 
-        logistic.fit(processed, Y)
+        processed_X = process_commands.fit_transform(X_train, y_train)
+        processed_X_test = process_commands.fit_transform(X_test, y_test)
 
-        y_pred = logistic.predict(processed)
-        print(classification_report(Y, y_pred, target_names=enc.classes_))
-        
+        # logistic.fit(processed, Y)
+
+        votingC = VotingClassifier(estimators=[('svc', svc), ('logistic', logistic),
+                                               ],
+                                   voting='soft', n_jobs=4, )
+
+        votingC.fit(processed_X, y_train)
+        y_pred = votingC.predict(processed_X_test)
+
+        cf = confusion_matrix(y_test, y_pred)
+
+        plot_confusion_matrix(cf,
+                              target_names=enc.classes_,
+                              title='Confusion matrix',
+                              cmap=None,
+                              normalize=True)
+
+        Console().print(y_pred)
+        print(classification_report(y_test, y_pred, target_names=enc.classes_))
+        probs = votingC.predict_proba(processed_X_test)
+        # Console().print(probs)
+
+        sns.set_theme()
+        plt.figure(0)
+        # precision recall curve
+        n_classes = probs.shape[-1]
+        dummy = np.eye(n_classes)[y_test]
+        precision = dict()
+        recall = dict()
+        for i in range(n_classes):
+            precision[i], recall[i], _ = precision_recall_curve(dummy[:, i],
+                                                                probs[:, i])
+            plt.plot(recall[i], precision[i], lw=2, label='class {}'.format(i))
+
+        plt.xlabel("recall")
+        plt.ylabel("precision")
+        plt.legend(loc="best")
+        plt.title("precision vs. recall curve")
+        plt.show()
+        plt.savefig(f"./precision_recall_{tag}.png", bbox_inches="tight", dpi=400)
+
+        plt.figure(1)
+        n_classes = probs.shape[-1]
+        dummy = np.eye(n_classes)[y_test]
+        tpr = dict()
+        fpr = dict()
+        for i in range(n_classes):
+            fpr[i], tpr[i], _ = roc_curve(dummy[:, i],
+                                          probs[:, i])
+            plt.plot(fpr[i], tpr[i], lw=2, label='class {}'.format(i))
+
+        plt.xlabel("fpr")
+        plt.ylabel("tpr")
+        plt.legend(loc="best")
+        plt.title("precision vs. recall curve")
+        plt.show()
+        plt.savefig(f"./roc_cirve_{tag}.png", bbox_inches="tight", dpi=400)
 
 if __name__ == '__main__':
     main()
