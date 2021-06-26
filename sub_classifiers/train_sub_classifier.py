@@ -5,8 +5,10 @@ import matplotlib.pyplot as plt  # data visualization
 import seaborn as sns  # data visualization
 import re
 from sklearn.model_selection import train_test_split
+from sklearn.calibration import calibration_curve
 import nltk
 from sklearn.ensemble import VotingClassifier
+from sklearn.naive_bayes import GaussianNB
 
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
@@ -177,7 +179,6 @@ class Reshape(BaseEstimator, TransformerMixin):
 #         return self.vec.fit_transform(X).toarray()
 
 
-
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
                         n_jobs=1, train_sizes=np.linspace(.2, 1.0, 5)):
     """
@@ -328,11 +329,11 @@ def main():
         plt.show()
 
     with Console().status("pre-processing ....", spinner="bouncingBall"):
-        data = pd.read_csv(Path("/home/talha/PycharmProjects/command2code/dataset/validation_data/command2code.csv").as_posix(),
-                           skipinitialspace=True)
+        data = pd.read_csv(
+            Path("/home/talha/PycharmProjects/command2code/dataset/validation_data/command2code.csv").as_posix(),
+            skipinitialspace=True)
 
         tag = "radiogroup"
-
 
         data = data[data["Main Label"] == tag]
         data = data.drop(columns=["Main Label"])
@@ -362,24 +363,34 @@ def main():
             ("logistic_CV", LogisticRegressionCV(cv=5, multi_class="ovr"))
         ])
 
+        NB = Pipeline([
+            # ("vec", Vectorizer()),
+            ("vec", CountVectorizer(ngram_range=(1, 4))),
+            ("tfidf", TfidfTransformer()),
+            ("NB", GaussianNB())
+        ])
+
         process_commands = Pipeline(steps=[("pre_process", pre_process(["Commands"])),
                                            ("reshape", Reshape()),
                                            ])
 
         X_train, X_test, y_train, y_test = train_test_split(data, Y, test_size=0.30, stratify=Y)
 
-        processed_X = process_commands.fit_transform(X_train, y_train)
+        processed_X_train = process_commands.fit_transform(X_train, y_train)
         processed_X_test = process_commands.fit_transform(X_test, y_test)
 
         # logistic.fit(processed, Y)
 
         votingC = VotingClassifier(estimators=[('svc', svc), ('logistic', logistic),
+                                               # ('nb', NB),
                                                ],
                                    voting='soft', n_jobs=4, )
 
-        votingC.fit(processed_X, y_train)
+        votingC.fit(processed_X_train, y_train)
         y_pred = votingC.predict(processed_X_test)
-
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #                      confusion matrix   
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         cf = confusion_matrix(y_test, y_pred)
 
         plot_confusion_matrix(cf,
@@ -389,11 +400,18 @@ def main():
                               normalize=True)
 
         Console().print(y_pred)
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #                      classification report   
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         print(classification_report(y_test, y_pred, target_names=enc.classes_))
         probs = votingC.predict_proba(processed_X_test)
         # Console().print(probs)
 
         sns.set_theme()
+
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #                      precision-recall curve
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         plt.figure(0)
         # precision recall curve
         n_classes = probs.shape[-1]
@@ -409,9 +427,12 @@ def main():
         plt.ylabel("precision")
         plt.legend(loc="best")
         plt.title("precision vs. recall curve")
-        plt.show()
         plt.savefig(f"./precision_recall_{tag}.png", bbox_inches="tight", dpi=400)
-
+        plt.show()
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #                      ROC curve
+        #                      calibration curve
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         plt.figure(1)
         n_classes = probs.shape[-1]
         dummy = np.eye(n_classes)[y_test]
@@ -425,9 +446,40 @@ def main():
         plt.xlabel("fpr")
         plt.ylabel("tpr")
         plt.legend(loc="best")
-        plt.title("precision vs. recall curve")
+        plt.title("ROC curve")
+        plt.savefig(f"./roc_curve_{tag}.png", bbox_inches="tight", dpi=400)
         plt.show()
-        plt.savefig(f"./roc_cirve_{tag}.png", bbox_inches="tight", dpi=400)
+
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #                      calibration curve
+        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        plt.figure(2, figsize=(10, 10))
+        ax1 = plt.subplot2grid((3, 3), (0, 0), rowspan=2, colspan=3)
+        ax2 = plt.subplot2grid((3, 3), (2, 0), colspan=3)
+
+        fraction_of_positives = dict()
+        mean_predicted_value = dict()
+        for i in range(n_classes):
+            fraction_of_positives[i], mean_predicted_value[i] = calibration_curve(dummy[:, i], probs[:, i], n_bins=10)
+            ax1.plot(mean_predicted_value[i], fraction_of_positives[i], "s-",
+                     label=f"{enc.classes_[i]}")
+            ax1.scatter(np.linspace(0, 1, 50),np.linspace(0, 1, 50), marker="p", s=100, facecolor='green')
+            ax2.hist(probs[:, i], range=(0, 1), bins=10, label=f"{enc.classes_[i]}",
+                     histtype="step", lw=2)
+
+        ax1.set_ylabel("Fraction of positives")
+        ax1.set_ylim([-0.05, 1.05])
+        ax1.legend(loc="lower right")
+        ax1.set_title('Calibration plots (reliability curve)')
+
+        ax2.set_xlabel("Mean predicted value")
+        ax2.set_ylabel("Count")
+        ax2.legend(loc="upper center", ncol=2)
+
+        plt.tight_layout()
+        plt.savefig("./calibration_curve.png", bbox_inches="tight", dpi=400)
+        plt.show()
+
 
 if __name__ == '__main__':
     main()
