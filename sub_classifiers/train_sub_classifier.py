@@ -8,8 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.calibration import calibration_curve
 import nltk
 from sklearn.ensemble import VotingClassifier
-from sklearn.naive_bayes import GaussianNB
-
+from sklearn.naive_bayes import MultinomialNB, GaussianNB
+import joblib
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 from nltk.corpus import wordnet
@@ -33,7 +33,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.pipeline import Pipeline
 from nltk.stem.porter import PorterStemmer
 from nltk.stem import WordNetLemmatizer
-from sklearn.base import TransformerMixin, BaseEstimator
+from sklearn.base import TransformerMixin, BaseEstimator, ClassifierMixin
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
 from nltk.tokenize import word_tokenize
@@ -249,6 +249,24 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
     return plt
 
 
+class naive_bayesian(BaseEstimator, ClassifierMixin):
+    def __init__(self, clf):
+        super(naive_bayesian, self).__init__()
+        self.clf = clf
+
+    def fit(self, X, y=None):
+        self.classifier_ = self.clf
+        self.classifier_.fit(X.A, y)
+        return self
+
+    def predict(self, X):
+        # return self.classifier_.predict_proba(X)
+        return self.classifier_.predict(X)
+    def predict_proba(self, X):
+        return self.classifier_.predict_proba(X.A)
+        # return self.classifier_.predict(X)
+
+
 def main():
     def plot_confusion_matrix(cm,
                               target_names,
@@ -329,157 +347,166 @@ def main():
         plt.show()
 
     with Console().status("pre-processing ....", spinner="bouncingBall"):
-        data = pd.read_csv(
+        original_data = pd.read_csv(
             Path("/home/talha/PycharmProjects/command2code/dataset/validation_data/command2code.csv").as_posix(),
             skipinitialspace=True)
+        tags = original_data["Main Label"].unique().tolist()
 
-        tag = "radiogroup"
+        for tag in tags:
 
-        data = data[data["Main Label"] == tag]
-        data = data.drop(columns=["Main Label"])
-        Console().print(data.shape)
-        Console().print(f"columns are ----> {data.columns.tolist()}")
-        Console().print(f"columns dtypes ----> {data.dtypes}")
+            # tag = "radiogroup"
+            data = original_data.copy()
+            data = data[data["Main Label"] == tag]
+            data = data.drop(columns=["Main Label"])
+            Console().print(data.shape)
+            Console().print(f"columns are ----> {data.columns.tolist()}")
+            Console().print(f"columns dtypes ----> {data.dtypes}")
 
-        enc = LabelEncoder()
-        # pipeline doesnot operate on the labels
+            enc = LabelEncoder()
+            # pipeline doesnot operate on the labels
 
-        # Y = label_binarize(data['Sub label'].tolist(), classes=[*range(3)])
-        Y = enc.fit_transform(data['Sub label'].tolist())
+            # Y = label_binarize(data['Sub label'].tolist(), classes=[*range(3)])
+            Y = enc.fit_transform(data['Sub label'].tolist())
 
-        # make column transformer to process the 'commands' column.
-        vec = CountVectorizer(ngram_range=(1, 4))
-        clf = SVC()
+            # make column transformer to process the 'commands' column.
+            vec = CountVectorizer(ngram_range=(1, 4))
+            clf = SVC()
 
-        svc = Pipeline([
-            ("vec", CountVectorizer(ngram_range=(1, 4))),
-            ("tfidf", TfidfTransformer()),
-            ("svc", SVC(probability=True))
-        ])
-        logistic = Pipeline([
-            # ("vec", Vectorizer()),
-            ("vec", CountVectorizer(ngram_range=(1, 4))),
-            ("tfidf", TfidfTransformer()),
-            ("logistic_CV", LogisticRegressionCV(cv=5, multi_class="ovr"))
-        ])
+            svc = Pipeline([
+                ("vec", CountVectorizer(ngram_range=(1, 4))),
+                ("tfidf", TfidfTransformer()),
+                ("svc", SVC(probability=True))
+            ])
+            logistic = Pipeline([
+                # ("vec", Vectorizer()),
+                ("vec", CountVectorizer(ngram_range=(1, 4))),
+                ("tfidf", TfidfTransformer()),
+                ("logistic_CV", LogisticRegressionCV(cv=5, multi_class="ovr"))
+            ])
 
-        NB = Pipeline([
-            # ("vec", Vectorizer()),
-            ("vec", CountVectorizer(ngram_range=(1, 4))),
-            ("tfidf", TfidfTransformer()),
-            ("NB", GaussianNB())
-        ])
+            NB = Pipeline([
+                # ("vec", Vectorizer()),
+                ("vec", CountVectorizer(ngram_range=(1, 4))),
+                ("tfidf", TfidfTransformer()),
+                ("NB", naive_bayesian(GaussianNB()))
+            ])
 
-        process_commands = Pipeline(steps=[("pre_process", pre_process(["Commands"])),
-                                           ("reshape", Reshape()),
-                                           ])
+            process_commands = Pipeline(steps=[("pre_process", pre_process(["Commands"])),
+                                               ("reshape", Reshape()),
+                                               ])
 
-        X_train, X_test, y_train, y_test = train_test_split(data, Y, test_size=0.30, stratify=Y)
+            X_train, X_test, y_train, y_test = train_test_split(data, Y, test_size=0.30, stratify=Y)
 
-        processed_X_train = process_commands.fit_transform(X_train, y_train)
-        processed_X_test = process_commands.fit_transform(X_test, y_test)
+            processed_X_train = process_commands.fit_transform(X_train, y_train)
+            processed_X_test = process_commands.fit_transform(X_test, y_test)
 
-        # logistic.fit(processed, Y)
+            # NB.fit(processed_X_train, y_train)
 
-        votingC = VotingClassifier(estimators=[('svc', svc), ('logistic', logistic),
-                                               # ('nb', NB),
-                                               ],
-                                   voting='soft', n_jobs=4, )
+            votingC = VotingClassifier(estimators=[('svc', svc), ('logistic', logistic),
+                                                   ('nb', NB),
+                                                   ],
+                                       voting='soft', n_jobs=4, )
+            #
+            votingC.fit(processed_X_train, y_train)
+            y_pred = votingC.predict(processed_X_test)
 
-        votingC.fit(processed_X_train, y_train)
-        y_pred = votingC.predict(processed_X_test)
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        #                      confusion matrix   
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        cf = confusion_matrix(y_test, y_pred)
 
-        plot_confusion_matrix(cf,
-                              target_names=enc.classes_,
-                              title='Confusion matrix',
-                              cmap=None,
-                              normalize=True)
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            #                      confusion matrix
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            cf = confusion_matrix(y_test, y_pred)
 
-        Console().print(y_pred)
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        #                      classification report   
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        print(classification_report(y_test, y_pred, target_names=enc.classes_))
-        probs = votingC.predict_proba(processed_X_test)
-        # Console().print(probs)
+            plot_confusion_matrix(cf,
+                                  target_names=enc.classes_,
+                                  title='Confusion matrix',
+                                  cmap=None,
+                                  normalize=True)
 
-        sns.set_theme()
+            Console().print(y_pred)
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            #                      classification report
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            print(classification_report(y_test, y_pred, target_names=enc.classes_))
+            probs = votingC.predict_proba(processed_X_test)
+            # Console().print(probs)
 
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        #                      precision-recall curve
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        plt.figure(0)
-        # precision recall curve
-        n_classes = probs.shape[-1]
-        dummy = np.eye(n_classes)[y_test]
-        precision = dict()
-        recall = dict()
-        for i in range(n_classes):
-            precision[i], recall[i], _ = precision_recall_curve(dummy[:, i],
-                                                                probs[:, i])
-            plt.plot(recall[i], precision[i], lw=2, label='class {}'.format(i))
+            sns.set_theme()
 
-        plt.xlabel("recall")
-        plt.ylabel("precision")
-        plt.legend(loc="best")
-        plt.title("precision vs. recall curve")
-        plt.savefig(f"./precision_recall_{tag}.png", bbox_inches="tight", dpi=400)
-        plt.show()
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        #                      ROC curve
-        #                      calibration curve
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        plt.figure(1)
-        n_classes = probs.shape[-1]
-        dummy = np.eye(n_classes)[y_test]
-        tpr = dict()
-        fpr = dict()
-        for i in range(n_classes):
-            fpr[i], tpr[i], _ = roc_curve(dummy[:, i],
-                                          probs[:, i])
-            plt.plot(fpr[i], tpr[i], lw=2, label='class {}'.format(i))
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            #                      precision-recall curve
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            plt.figure(0)
+            # precision recall curve
+            n_classes = probs.shape[-1]
+            dummy = np.eye(n_classes)[y_test]
+            precision = dict()
+            recall = dict()
+            for i in range(n_classes):
+                precision[i], recall[i], _ = precision_recall_curve(dummy[:, i],
+                                                                    probs[:, i])
+                plt.plot(recall[i], precision[i], lw=2, label='class {}'.format(i))
 
-        plt.xlabel("fpr")
-        plt.ylabel("tpr")
-        plt.legend(loc="best")
-        plt.title("ROC curve")
-        plt.savefig(f"./roc_curve_{tag}.png", bbox_inches="tight", dpi=400)
-        plt.show()
+            plt.xlabel("recall")
+            plt.ylabel("precision")
+            plt.legend(loc="best")
+            plt.title("precision vs. recall curve")
+            plt.savefig(f"./precision_recall_{tag}.png", bbox_inches="tight", dpi=400)
+            plt.show()
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            #                      ROC curve
+            #                      calibration curve
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            plt.figure(1)
+            n_classes = probs.shape[-1]
+            dummy = np.eye(n_classes)[y_test]
+            tpr = dict()
+            fpr = dict()
+            for i in range(n_classes):
+                fpr[i], tpr[i], _ = roc_curve(dummy[:, i],
+                                              probs[:, i])
+                plt.plot(fpr[i], tpr[i], lw=2, label='class {}'.format(i))
 
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        #                      calibration curve
-        # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        plt.figure(2, figsize=(10, 10))
-        ax1 = plt.subplot2grid((3, 3), (0, 0), rowspan=2, colspan=3)
-        ax2 = plt.subplot2grid((3, 3), (2, 0), colspan=3)
+            plt.xlabel("fpr")
+            plt.ylabel("tpr")
+            plt.legend(loc="best")
+            plt.title("ROC curve")
+            plt.savefig(f"./roc_curve_{tag}.png", bbox_inches="tight", dpi=400)
+            plt.show()
 
-        fraction_of_positives = dict()
-        mean_predicted_value = dict()
-        for i in range(n_classes):
-            fraction_of_positives[i], mean_predicted_value[i] = calibration_curve(dummy[:, i], probs[:, i], n_bins=10)
-            ax1.plot(mean_predicted_value[i], fraction_of_positives[i], "s-",
-                     label=f"{enc.classes_[i]}")
-            ax1.scatter(np.linspace(0, 1, 50),np.linspace(0, 1, 50), marker="p", s=100, facecolor='green')
-            ax2.hist(probs[:, i], range=(0, 1), bins=10, label=f"{enc.classes_[i]}",
-                     histtype="step", lw=2)
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            #                      calibration curve
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            plt.figure(2, figsize=(10, 10))
+            ax1 = plt.subplot2grid((3, 3), (0, 0), rowspan=2, colspan=3)
+            ax2 = plt.subplot2grid((3, 3), (2, 0), colspan=3)
 
-        ax1.set_ylabel("Fraction of positives")
-        ax1.set_ylim([-0.05, 1.05])
-        ax1.legend(loc="lower right")
-        ax1.set_title('Calibration plots (reliability curve)')
+            fraction_of_positives = dict()
+            mean_predicted_value = dict()
+            for i in range(n_classes):
+                fraction_of_positives[i], mean_predicted_value[i] = calibration_curve(dummy[:, i], probs[:, i], n_bins=10)
+                ax1.plot(mean_predicted_value[i], fraction_of_positives[i], "s-",
+                         label=f"{enc.classes_[i]}")
+                ax1.scatter(np.linspace(0, 1, 50), np.linspace(0, 1, 50), marker="p", s=80, facecolor='green', alpha=0.5,
+                            edgecolor="k")
+                ax2.hist(probs[:, i], range=(0, 1), bins=10, label=f"{enc.classes_[i]}",
+                         histtype="step", lw=2)
 
-        ax2.set_xlabel("Mean predicted value")
-        ax2.set_ylabel("Count")
-        ax2.legend(loc="upper center", ncol=2)
+            ax1.set_ylabel("Fraction of positives")
+            ax1.set_ylim([-0.05, 1.05])
+            ax1.legend(loc="lower right")
+            ax1.set_title('Calibration plots (reliability curve)')
 
-        plt.tight_layout()
-        plt.savefig("./calibration_curve.png", bbox_inches="tight", dpi=400)
-        plt.show()
+            ax2.set_xlabel("Mean predicted value")
+            ax2.set_ylabel("Count")
+            ax2.legend(loc="upper center", ncol=2)
 
+            plt.tight_layout()
+            plt.savefig("./calibration_curve.png", bbox_inches="tight", dpi=400)
+            plt.show()
+
+            joblib.dump(enc, f"./sub_classifiers/label_encoder_{tag}.pkl")
+            joblib.dump(votingC, f"./sub_classifiers/sub_clf_{tag}.pkl")
+            joblib.dump(process_commands, f"./sub_classifiers/process_commands_{tag}.pkl")
 
 if __name__ == '__main__':
     main()

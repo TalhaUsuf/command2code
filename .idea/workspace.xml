@@ -3,7 +3,27 @@
   <component name="ChangeListManager">
     <list default="true" id="5c5314d6-ed9b-498c-b6aa-b378429c6a31" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/precision_recall_radiogroup.png" beforeDir="false" afterPath="$PROJECT_DIR$/precision_recall_radiogroup.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calibration_curve.png" beforeDir="false" afterPath="$PROJECT_DIR$/calibration_curve.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/confusion_matrix.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/confusion_matrix_datebox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/confusion_matrix_dropdown.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/confusion_matrix_numberbox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/confusion_matrix_radiogroup.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/confusion_matrix_textbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/confusion_matrix_textbox.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/precision_recall.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/precision_recall_datebox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/precision_recall_dropdown.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/precision_recall_numberbox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/precision_recall_radiogroup.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/precision_recall_textbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/precision_recall_textbox.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roc_cirve.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roc_cirve_datebox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roc_cirve_dropdown.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roc_cirve_numberbox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roc_cirve_radiogroup.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roc_cirve_textbox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roc_curve_radiogroup.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/sub_classifiers/train_sub_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/train_sub_classifier.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,7 +54,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.command2code">
+  <component name="RunManager" selected="Python.train_sub_classifier">
     <configuration name="command2code" type="PythonConfigurationType" factoryName="Python">
       <module name="command2code" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -57,17 +77,17 @@
       <method v="2" />
     </configuration>
     <configuration name="train_sub_classifier" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="command2code" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="$USER_HOME$/.virtualenvs/tensorrt/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sub_classifiers" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sub_classifiers/train_sub_classifier.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
