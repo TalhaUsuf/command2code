@@ -343,8 +343,8 @@ def main():
         plt.tight_layout()
         plt.ylabel('True label')
         plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
-        plt.savefig(f"./confusion_matrix_{tag}.png", dpi=400, bbox_inches="tight")
-        plt.show()
+        plt.savefig(f"./sub_classifiers/confusion_matrix_{tag}.png", dpi=400, bbox_inches="tight")
+        # plt.show()
 
     with Console().status("pre-processing ....", spinner="bouncingBall"):
         original_data = pd.read_csv(
@@ -450,8 +450,8 @@ def main():
             plt.ylabel("precision")
             plt.legend(loc="best")
             plt.title("precision vs. recall curve")
-            plt.savefig(f"./precision_recall_{tag}.png", bbox_inches="tight", dpi=400)
-            plt.show()
+            plt.savefig(f"./sub_classifiers/precision_recall_{tag}.png", bbox_inches="tight", dpi=400)
+            # plt.show()
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             #                      ROC curve
             #                      calibration curve
@@ -470,8 +470,8 @@ def main():
             plt.ylabel("tpr")
             plt.legend(loc="best")
             plt.title("ROC curve")
-            plt.savefig(f"./roc_curve_{tag}.png", bbox_inches="tight", dpi=400)
-            plt.show()
+            plt.savefig(f"./sub_classifiers/roc_curve_{tag}.png", bbox_inches="tight", dpi=400)
+            # plt.show()
 
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             #                      calibration curve
@@ -501,8 +501,8 @@ def main():
             ax2.legend(loc="upper center", ncol=2)
 
             plt.tight_layout()
-            plt.savefig("./calibration_curve.png", bbox_inches="tight", dpi=400)
-            plt.show()
+            plt.savefig(f"./sub_classifiers/calibration_curve_{tag}.png", bbox_inches="tight", dpi=400)
+            # plt.show()
 
             joblib.dump(enc, f"./sub_classifiers/label_encoder_{tag}.pkl")
             joblib.dump(votingC, f"./sub_classifiers/sub_clf_{tag}.pkl")
