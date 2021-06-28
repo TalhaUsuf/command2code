@@ -36,7 +36,18 @@
 
 # Sub Classifier Results
 
-<a name="text-preprocessing-for-sub-classifiers"></a>
+| Sub-Class | Confusion Matrix | Precision Recall Curve | Calibration Curve | ROC Curve | 
+|:----------| :--------------: | :---------------------:| :----------------:| :-----------: |
+|button | ![](./sub_classifiers/confusion_matrix_button.png) | ![](./sub_classifiers/precision_recall_button.png) | ![](./sub_classifiers/calibration_curve_button.png) | ![](./sub_classifiers/roc_curve_button.png) |
+|checkbox | ![](./sub_classifiers/confusion_matrix_checkbox.png) | ![](./sub_classifiers/precision_recall_checkbox.png) | ![](./sub_classifiers/calibration_curve_checkbox.png) | ![](./sub_classifiers/roc_curve_checkbox.png) |
+|datebox  | ![](./sub_classifiers/confusion_matrix_datebox.png) | ![](sub_classifiers/precision_recall_datebox.png) | ![](./sub_classifiers/calibration_curve_datebox.png) | ![](./sub_classifiers/roc_curve_datebox.png) |
+|dropdown | ![](./sub_classifiers/confusion_matrix_dropdown.png) | ![](./sub_classifiers/precision_recall_dropdown.png) | ![](./sub_classifiers/calibration_curve_dropdown.png) | ![](./sub_classifiers/roc_curve_dropdown.png) |
+|emailbox | ![](./sub_classifiers/confusion_matrix_emailbox.png) | ![](./sub_classifiers/precision_recall_emailbox.png) | ![](./sub_classifiers/calibration_curve_emailbox.png) | ![](./sub_classifiers/roc_curve_emailbox.png) |
+|multiline| ![](./sub_classifiers/confusion_matrix_multiline.png) | ![](./sub_classifiers/precision_recall_multiline.png)| ![](./sub_classifiers/calibration_curve_multiline.png) | ![](./sub_classifiers/roc_curve_multiline.png)|
+|numberbox| ![](./sub_classifiers/confusion_matrix_numberbox.png) | ![](./sub_classifiers/precision_recall_numberbox.png)| ![](./sub_classifiers/calibration_curve_numberbox.png) | ![](./sub_classifiers/roc_curve_numberbox.png)|
+|radiogroup| ![](./sub_classifiers/confusion_matrix_radiogroup.png)| ![](./sub_classifiers/precision_recall_radiogroup.png)| ![](./sub_classifiers/calibration_curve_radiogroup.png) | ![](./sub_classifiers/roc_curve_radiogroup.png) |
+|textbox| ![](./sub_classifiers/confusion_matrix_textbox.png)      | ![](./sub_classifiers/precision_recall_textbox.png)  | ![](./sub_classifiers/calibration_curve_textbox.png)    | ![](./sub_classifiers/roc_curve_textbox.png) |
+
 # Text preprocessing for Sub-Classifiers
 
 >> **Note** See results after each operation to check it doesn't remove keywords from the text

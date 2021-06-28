@@ -18,7 +18,7 @@ from sklearn.model_selection import train_test_split, KFold, cross_val_score, le
 from sklearn.linear_model import LogisticRegression  # Logistic Regression
 from sklearn.svm import SVC  # Support Vector Machine
 from sklearn.ensemble import RandomForestClassifier  # Random Rorest Classifier
-from sklearn.metrics import roc_curve, confusion_matrix  # ROC and AUC
+from sklearn.metrics import roc_curve, confusion_matrix, average_precision_score  # ROC and AUC
 from sklearn.metrics import accuracy_score, precision_recall_curve  # Accuracy
 from sklearn.metrics import recall_score  # Recall
 from sklearn.metrics import precision_score  # Prescisonfr
@@ -43,7 +43,11 @@ from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from collections import Counter
 from sklearn.metrics import classification_report
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
+from absl import flags, app
+from absl.flags import FLAGS
 
+
+flags.DEFINE_string("path", default="./dataset/validation_data/command2code.csv", help="path to the csv file dataset")
 
 # # Creating our tokenizer function
 # def spacy_tokenizer(sentence):
@@ -256,18 +260,19 @@ class naive_bayesian(BaseEstimator, ClassifierMixin):
 
     def fit(self, X, y=None):
         self.classifier_ = self.clf
-        self.classifier_.fit(X.A, y)
+        self.classifier_.fit(X.A, y) # X contains sparse matrix from tfidf
         return self
 
     def predict(self, X):
         # return self.classifier_.predict_proba(X)
         return self.classifier_.predict(X)
     def predict_proba(self, X):
+        # voting classifier needs predict_proba method to be implemented
         return self.classifier_.predict_proba(X.A)
         # return self.classifier_.predict(X)
 
 
-def main():
+def main(argv):
     def plot_confusion_matrix(cm,
                               target_names,
 
@@ -346,14 +351,17 @@ def main():
         plt.savefig(f"./sub_classifiers/confusion_matrix_{tag}.png", dpi=400, bbox_inches="tight")
         # plt.show()
 
-    with Console().status("pre-processing ....", spinner="bouncingBall"):
+    with Console().status("pre-processing & training ....", spinner="bouncingBall"):
         original_data = pd.read_csv(
-            Path("/home/talha/PycharmProjects/command2code/dataset/validation_data/command2code.csv").as_posix(),
+            Path(FLAGS.path).as_posix(),
             skipinitialspace=True)
+        # get all the sub classifier tags
         tags = original_data["Main Label"].unique().tolist()
-
+        ap = {}
         for tag in tags:
-
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            #                      loop over each of the sub-classes
+            # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # tag = "radiogroup"
             data = original_data.copy()
             data = data[data["Main Label"] == tag]
@@ -410,6 +418,8 @@ def main():
             votingC.fit(processed_X_train, y_train)
             y_pred = votingC.predict(processed_X_test)
 
+            ap.set_default("subclassifier", []).append(f"{tag}")
+            ap.set_default("AP",[]).append(average_precision_score(y_test, y_pred))
 
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             #                      confusion matrix
@@ -435,7 +445,7 @@ def main():
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             #                      precision-recall curve
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            plt.figure(0)
+            plt.figure()
             # precision recall curve
             n_classes = probs.shape[-1]
             dummy = np.eye(n_classes)[y_test]
@@ -456,7 +466,7 @@ def main():
             #                      ROC curve
             #                      calibration curve
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            plt.figure(1)
+            plt.figure()
             n_classes = probs.shape[-1]
             dummy = np.eye(n_classes)[y_test]
             tpr = dict()
@@ -476,7 +486,7 @@ def main():
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             #                      calibration curve
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            plt.figure(2, figsize=(10, 10))
+            plt.figure(figsize=(10, 10))
             ax1 = plt.subplot2grid((3, 3), (0, 0), rowspan=2, colspan=3)
             ax2 = plt.subplot2grid((3, 3), (2, 0), colspan=3)
 
@@ -508,5 +518,7 @@ def main():
             joblib.dump(votingC, f"./sub_classifiers/sub_clf_{tag}.pkl")
             joblib.dump(process_commands, f"./sub_classifiers/process_commands_{tag}.pkl")
 
+        pd.DataFrame.from_dict(ap).to_csv(f"./sub_classifiers/AP.csv", index=False)
+
 if __name__ == '__main__':
-    main()
+    app.run(main)
