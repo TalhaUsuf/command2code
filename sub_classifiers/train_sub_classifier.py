@@ -10,6 +10,7 @@ import nltk
 from sklearn.ensemble import VotingClassifier
 from sklearn.naive_bayes import MultinomialNB, GaussianNB
 import joblib
+
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 from nltk.corpus import wordnet
@@ -46,8 +47,8 @@ from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from absl import flags, app
 from absl.flags import FLAGS
 
-
 flags.DEFINE_string("path", default="./dataset/validation_data/command2code.csv", help="path to the csv file dataset")
+
 
 # # Creating our tokenizer function
 # def spacy_tokenizer(sentence):
@@ -130,7 +131,7 @@ class pre_process(BaseEstimator, TransformerMixin):
                 c[word] += 1
 
         Console().log(f"10 most common words are ==> {c.most_common(10)}")
-        FREQ_WORDS = [k for k, w in c.most_common(1)]
+        FREQ_WORDS = [k for k, w in c.most_common(1)]  # word : counts
         select_cols = select_cols.apply(lambda x: [" ".join([i for i in k.split() if i not in FREQ_WORDS]) for k in x])
 
         # remove the rare words
@@ -260,12 +261,13 @@ class naive_bayesian(BaseEstimator, ClassifierMixin):
 
     def fit(self, X, y=None):
         self.classifier_ = self.clf
-        self.classifier_.fit(X.A, y) # X contains sparse matrix from tfidf
+        self.classifier_.fit(X.A, y)  # X contains sparse matrix from tfidf
         return self
 
     def predict(self, X):
         # return self.classifier_.predict_proba(X)
         return self.classifier_.predict(X)
+
     def predict_proba(self, X):
         # voting classifier needs predict_proba method to be implemented
         return self.classifier_.predict_proba(X.A)
@@ -418,9 +420,6 @@ def main(argv):
             votingC.fit(processed_X_train, y_train)
             y_pred = votingC.predict(processed_X_test)
 
-            ap.set_default("subclassifier", []).append(f"{tag}")
-            ap.set_default("AP",[]).append(average_precision_score(y_test, y_pred))
-
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             #                      confusion matrix
             # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -452,6 +451,9 @@ def main(argv):
             precision = dict()
             recall = dict()
             for i in range(n_classes):
+                ap.set_default("main_classifier", []).append(tag)
+                ap.set_default("sub_classifier", []).append(enc.classes_[i])
+                ap.set_default("AP", []).append(average_precision_score(dummy[:, i], probs[:, i]))
                 precision[i], recall[i], _ = precision_recall_curve(dummy[:, i],
                                                                     probs[:, i])
                 plt.plot(recall[i], precision[i], lw=2, label='class {}'.format(i))
@@ -469,6 +471,7 @@ def main(argv):
             plt.figure()
             n_classes = probs.shape[-1]
             dummy = np.eye(n_classes)[y_test]
+
             tpr = dict()
             fpr = dict()
             for i in range(n_classes):
@@ -493,10 +496,12 @@ def main(argv):
             fraction_of_positives = dict()
             mean_predicted_value = dict()
             for i in range(n_classes):
-                fraction_of_positives[i], mean_predicted_value[i] = calibration_curve(dummy[:, i], probs[:, i], n_bins=10)
+                fraction_of_positives[i], mean_predicted_value[i] = calibration_curve(dummy[:, i], probs[:, i],
+                                                                                      n_bins=10)
                 ax1.plot(mean_predicted_value[i], fraction_of_positives[i], "s-",
                          label=f"{enc.classes_[i]}")
-                ax1.scatter(np.linspace(0, 1, 50), np.linspace(0, 1, 50), marker="p", s=80, facecolor='green', alpha=0.5,
+                ax1.scatter(np.linspace(0, 1, 50), np.linspace(0, 1, 50), marker="p", s=80, facecolor='green',
+                            alpha=0.5,
                             edgecolor="k")
                 ax2.hist(probs[:, i], range=(0, 1), bins=10, label=f"{enc.classes_[i]}",
                          histtype="step", lw=2)
@@ -519,6 +524,7 @@ def main(argv):
             joblib.dump(process_commands, f"./sub_classifiers/process_commands_{tag}.pkl")
 
         pd.DataFrame.from_dict(ap).to_csv(f"./sub_classifiers/AP.csv", index=False)
+
 
 if __name__ == '__main__':
     app.run(main)

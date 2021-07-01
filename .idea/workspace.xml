@@ -2,52 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c5314d6-ed9b-498c-b6aa-b378429c6a31" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/command2code.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/newplot (1).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/newplot (2).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/newplot.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130767468.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130769833.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130772599.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130774219.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130776600.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130777894.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130779974.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130781448.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130783170.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/calibration_curve_button.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/calibration_curve_button.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/calibration_curve_checkbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/calibration_curve_checkbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/calibration_curve_datebox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/calibration_curve_datebox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/calibration_curve_dropdown.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/calibration_curve_dropdown.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/calibration_curve_emailbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/calibration_curve_emailbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/calibration_curve_multiline.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/calibration_curve_multiline.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/calibration_curve_numberbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/calibration_curve_numberbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/calibration_curve_radiogroup.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/calibration_curve_radiogroup.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/calibration_curve_textbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/calibration_curve_textbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_checkbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_checkbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_datebox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_datebox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_dropdown.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_dropdown.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_emailbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_emailbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_multiline.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_multiline.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_numberbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_numberbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_radiogroup.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_radiogroup.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_textbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/confusion_matrix_textbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/precision_recall_button.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/precision_recall_button.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/precision_recall_checkbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/precision_recall_checkbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/precision_recall_datebox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/precision_recall_datebox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/precision_recall_dropdown.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/precision_recall_dropdown.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/precision_recall_emailbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/precision_recall_emailbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/precision_recall_multiline.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/precision_recall_multiline.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/precision_recall_numberbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/precision_recall_numberbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/precision_recall_radiogroup.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/precision_recall_radiogroup.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/precision_recall_textbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/precision_recall_textbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/roc_curve_button.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/roc_curve_button.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/roc_curve_checkbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/roc_curve_checkbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/roc_curve_datebox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/roc_curve_datebox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/roc_curve_dropdown.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/roc_curve_dropdown.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/roc_curve_emailbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/roc_curve_emailbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/roc_curve_multiline.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/roc_curve_multiline.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/roc_curve_numberbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/roc_curve_numberbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/roc_curve_radiogroup.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/roc_curve_radiogroup.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/roc_curve_textbox.png" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/roc_curve_textbox.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/sub_clf_button.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/sub_clf_button.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/sub_clf_checkbox.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/sub_clf_checkbox.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/sub_clf_datebox.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/sub_clf_datebox.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/sub_clf_dropdown.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/sub_clf_dropdown.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/sub_clf_emailbox.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/sub_clf_emailbox.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/sub_clf_multiline.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/sub_clf_multiline.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/sub_clf_numberbox.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/sub_clf_numberbox.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/sub_clf_radiogroup.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/sub_clf_radiogroup.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/sub_clf_textbox.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/sub_clf_textbox.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sub_classifiers/train_sub_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/train_sub_classifier.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,8 +45,14 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/images_readme" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.train_sub_classifier">
     <configuration name="command2code" type="PythonConfigurationType" factoryName="Python">
