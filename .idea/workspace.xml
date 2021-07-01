@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5c5314d6-ed9b-498c-b6aa-b378429c6a31" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/command2code.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/newplot (1).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/newplot (2).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/newplot.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130767468.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130769833.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130772599.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130774219.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130776600.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130777894.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130779974.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130781448.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images_readme/pie_export_1625130783170.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub_classifiers/train_sub_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/sub_classifiers/train_sub_classifier.py" afterDir="false" />
-    </list>
+    <list default="true" id="5c5314d6-ed9b-498c-b6aa-b378429c6a31" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,6 +17,27 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="development" />
+                    <option name="lastUsedInstant" value="1625132520" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
   </component>
   <component name="ProjectId" id="1uIjBavMXhAVkIb2OIB3ylfvGGj" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

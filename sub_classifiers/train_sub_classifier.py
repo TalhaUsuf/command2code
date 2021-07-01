@@ -451,9 +451,9 @@ def main(argv):
             precision = dict()
             recall = dict()
             for i in range(n_classes):
-                ap.set_default("main_classifier", []).append(tag)
-                ap.set_default("sub_classifier", []).append(enc.classes_[i])
-                ap.set_default("AP", []).append(average_precision_score(dummy[:, i], probs[:, i]))
+                ap.setdefault("main_classifier", []).append(tag)
+                ap.setdefault("sub_classifier", []).append(enc.classes_[i])
+                ap.setdefault("AP", []).append(average_precision_score(dummy[:, i], probs[:, i]))
                 precision[i], recall[i], _ = precision_recall_curve(dummy[:, i],
                                                                     probs[:, i])
                 plt.plot(recall[i], precision[i], lw=2, label='class {}'.format(i))
